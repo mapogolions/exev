@@ -5,6 +5,39 @@ namespace Exev.Tests;
 public class LexerTests
 {
     [Fact]
+    public void ShouldReturnSlashToken()
+    {
+        var token = new Lexer("/").NextToken();
+
+        Assert.Equal(SyntaxKind.SlashToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("/", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
+    public void ShouldReturnMinusToken()
+    {
+        var token = new Lexer("-").NextToken();
+
+        Assert.Equal(SyntaxKind.MinusToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("-", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
+    public void ShouldReturnPlusToken()
+    {
+        var token = new Lexer("+").NextToken();
+
+        Assert.Equal(SyntaxKind.PlusToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("+", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
     public void ShouldReturnStarToken()
     {
         var token = new Lexer("*").NextToken();

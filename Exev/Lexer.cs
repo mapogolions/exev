@@ -40,6 +40,18 @@ public class Lexer
         {
             return new SyntaxToken(SyntaxKind.AsteriskToken, _position++, "*", null);
         }
+        if (Current == '/')
+        {
+            return new SyntaxToken(SyntaxKind.SlashToken, _position++, "/", null);
+        }
+        if (Current == '+')
+        {
+            return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
+        }
+        if (Current == '-')
+        {
+            return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
+        }
         return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
     }
 
