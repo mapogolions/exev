@@ -10,5 +10,6 @@ public enum SyntaxKind
     AsteriskToken,
     SlashToken,
     OpenParenthesisToken,
-    CloseParenthesisToken
+    CloseParenthesisToken,
+    BadToken
 }

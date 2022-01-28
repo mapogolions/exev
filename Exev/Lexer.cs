@@ -12,6 +12,10 @@ public class Lexer
 
     public SyntaxToken NextToken()
     {
+        if (Current == '\0')
+        {
+            return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
+        }
         if (char.IsDigit(Current))
         {
             var start = _position;
@@ -19,7 +23,6 @@ public class Lexer
             var text = _source.Substring(start, _position - start);
             var value = int.Parse(text);
             return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
-
         }
         if (char.IsWhiteSpace(Current))
         {
@@ -52,7 +55,7 @@ public class Lexer
         {
             return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
         }
-        return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
+        throw new InvalidOperationException();
     }
 
     private char Current
