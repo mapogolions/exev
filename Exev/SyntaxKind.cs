@@ -7,7 +7,7 @@ public enum SyntaxKind
     EofToken,
     PlusToken,
     MinusToken,
-    StartToken,
+    AsteriskToken,
     SlashToken,
     OpenParenthesisToken,
     CloseParenthesisToken
