@@ -4,6 +4,17 @@ namespace Exev.Tests;
 
 public class LexerTests
 {
+    [Fact]
+    public void ShouldReturnEndOfFileTokenIfSourceIsEmpty()
+    {
+        var token = new Lexer("").NextToken();
+
+        Assert.Equal(SyntaxKind.Eof, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("\0", token.Text);
+        Assert.Null(token.Value);
+    }
+
     [Theory]
     [InlineData(" ", " ")]
     [InlineData("\t", "\t")]

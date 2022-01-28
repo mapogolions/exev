@@ -4,5 +4,5 @@ public enum SyntaxKind
 {
     Number,
     Space,
-    Word
+    Eof
 }

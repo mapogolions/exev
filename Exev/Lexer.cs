@@ -28,7 +28,7 @@ public class Lexer
             var text = _source.Substring(start, _position - start);
             return new SyntaxToken(SyntaxKind.Space, start, text, null);
         }
-        throw new NotImplementedException();
+        return new SyntaxToken(SyntaxKind.Eof, _position, "\0", null);
     }
 
     private char Current
