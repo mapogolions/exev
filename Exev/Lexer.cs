@@ -15,7 +15,7 @@ public class Lexer
         if (char.IsDigit(Current))
         {
             var start = _position;
-            while (char.IsDigit(Current)) Next();
+            while (char.IsDigit(Current)) _position++;
             var text = _source.Substring(start, _position - start);
             var value = int.Parse(text);
             return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
@@ -24,9 +24,13 @@ public class Lexer
         if (char.IsWhiteSpace(Current))
         {
             var start = _position;
-            while (char.IsWhiteSpace(Current)) Next();
+            while (char.IsWhiteSpace(Current)) _position++;
             var text = _source.Substring(start, _position - start);
             return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
+        }
+        if (Current == '(')
+        {
+            return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
         }
         return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
     }
@@ -39,6 +43,4 @@ public class Lexer
             return _source[_position];
         }
     }
-
-    private void Next() => _position++;
 }

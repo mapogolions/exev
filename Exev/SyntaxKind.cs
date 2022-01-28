@@ -4,5 +4,11 @@ public enum SyntaxKind
 {
     NumberToken,
     SpaceToken,
-    EofToken
+    EofToken,
+    PlusToken,
+    MinusToken,
+    StartToken,
+    SlashToken,
+    OpenParenthesisToken,
+    CloseParenthesisToken
 }
