@@ -32,6 +32,10 @@ public class Lexer
         {
             return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
         }
+        if (Current == ')')
+        {
+            return new SyntaxToken(SyntaxKind.CloseParenthesisToken, _position++, ")", null);
+        }
         return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
     }
 

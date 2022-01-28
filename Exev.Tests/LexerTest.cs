@@ -5,6 +5,18 @@ namespace Exev.Tests;
 public class LexerTests
 {
     [Fact]
+    public void ShouldReturnCloseParenthesisToken()
+    {
+        var token = new Lexer(")").NextToken();
+
+        Assert.Equal(SyntaxKind.CloseParenthesisToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal(")", token.Text);
+        Assert.Null(token.Value);
+    }
+
+
+    [Fact]
     public void ShouldReturnOpenParenthesisToken()
     {
         var token = new Lexer("(").NextToken();
