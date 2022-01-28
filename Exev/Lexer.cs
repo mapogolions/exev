@@ -21,6 +21,13 @@ public class Lexer
             return new SyntaxToken(SyntaxKind.Number, start, text, value);
 
         }
+        if (char.IsWhiteSpace(Current))
+        {
+            var start = _position;
+            while (char.IsWhiteSpace(Current)) Next();
+            var text = _source.Substring(start, _position - start);
+            return new SyntaxToken(SyntaxKind.Space, start, text, null);
+        }
         throw new NotImplementedException();
     }
 

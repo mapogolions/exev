@@ -2,8 +2,25 @@ using Xunit;
 
 namespace Exev.Tests;
 
-public class UnitTest1
+public class LexerTests
 {
+    [Theory]
+    [InlineData(" ", " ")]
+    [InlineData("\t", "\t")]
+    [InlineData(" \t", " \t")]
+    [InlineData("\n", "\n")]
+    [InlineData("  12", "  ")]
+    public void ShouldReturnSpaceToken(string source, string expected)
+    {
+        var lexer = new Lexer(source);
+        var token = lexer.NextToken();
+
+        Assert.Equal(SyntaxKind.Space, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal(expected, token.Text);
+        Assert.Null(token.Value);
+    }
+
     [Fact]
     public void ShouldReturnNumberToken()
     {
