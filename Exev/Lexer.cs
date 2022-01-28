@@ -55,7 +55,8 @@ public class Lexer
         {
             return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
         }
-        throw new InvalidOperationException();
+        return new SyntaxToken(SyntaxKind.BadToken, _position,
+            _source.Substring(_position, 1), null);
     }
 
     private char Current
