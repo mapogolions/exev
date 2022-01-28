@@ -17,7 +17,8 @@ public class Lexer
             var start = _position;
             while (char.IsDigit(Current)) Next();
             var text = _source.Substring(start, _position - start);
-            return new SyntaxToken(SyntaxKind.Number, start, text);
+            var value = int.Parse(text);
+            return new SyntaxToken(SyntaxKind.Number, start, text, value);
 
         }
         throw new NotImplementedException();
