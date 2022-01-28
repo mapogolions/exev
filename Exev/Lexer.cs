@@ -18,7 +18,7 @@ public class Lexer
             while (char.IsDigit(Current)) Next();
             var text = _source.Substring(start, _position - start);
             var value = int.Parse(text);
-            return new SyntaxToken(SyntaxKind.Number, start, text, value);
+            return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
 
         }
         if (char.IsWhiteSpace(Current))
@@ -26,9 +26,9 @@ public class Lexer
             var start = _position;
             while (char.IsWhiteSpace(Current)) Next();
             var text = _source.Substring(start, _position - start);
-            return new SyntaxToken(SyntaxKind.Space, start, text, null);
+            return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
         }
-        return new SyntaxToken(SyntaxKind.Eof, _position, "\0", null);
+        return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
     }
 
     private char Current
