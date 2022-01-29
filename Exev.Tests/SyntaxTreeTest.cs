@@ -6,18 +6,19 @@ public class SyntaxTreeTest
 {
     [Fact]
     public void ShouldSkipClimbUpRightAssocSyntaxNodeIfPrecedenceIsEqualToCurrentNodePrecedence()
-    {
+    { // + - 1
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
-                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "+", null),
+                precedence: 1,
+                metaInfo: SyntaxNodeInfo.RightAssoc
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
-                precedence: 10,
+                precedence: 1,
                 metaInfo: SyntaxNodeInfo.RightAssoc
             ));
-        Assert.Equal("( 1 -", tree.Traverse(Traversal.PreOrder));
+        Assert.Equal("( + -", tree.Traverse(Traversal.PreOrder));
     }
 
     [Fact]
@@ -72,16 +73,16 @@ public class SyntaxTreeTest
     public void ShouldSkipClimbUpLeftAssocSyntaxNodeIfPrecedenceIsGreaterThanCurrentNodePrecedence()
     {
         var tree = new SyntaxTree(Root)
+            .Insert(new SyntaxNode (
+                new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
+                precedence: 1,
+                metaInfo: SyntaxNodeInfo.LeftAssoc
+            ))
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10
-            ))
-            .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
-                precedence: 11,
-                metaInfo: SyntaxNodeInfo.LeftAssoc
             ));
-        Assert.Equal("( 1 +", tree.Traverse(Traversal.PreOrder));
+        Assert.Equal("( + 1", tree.Traverse(Traversal.PreOrder));
     }
 
     [Fact]
@@ -93,11 +94,11 @@ public class SyntaxTreeTest
                 precedence: 10
             ))
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
+                new SyntaxToken(SyntaxKind.PlusToken, -1, "2", 2),
                 precedence: 10,
                 metaInfo: SyntaxNodeInfo.LeftAssoc
             ));
-        Assert.Equal("( + 1", tree.Traverse(Traversal.PreOrder));
+        Assert.Equal("( 2 1", tree.Traverse(Traversal.PreOrder));
     }
 
     [Fact]
