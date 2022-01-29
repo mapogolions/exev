@@ -5,7 +5,37 @@ namespace Exev.Tests;
 public class SyntaxTreeTest
 {
     [Fact]
-    public void ShouldClimbUpOperator()
+    public void ShouldSkipClimbUpLeftAssocSyntaxNodeIfPrecedenceIsGreaterCurrentNodePrecedence()
+    {
+        var tree = new SyntaxTree(Root)
+            .Insert(new SyntaxNode(
+                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
+                precedence: 10
+            ))
+            .Insert(new SyntaxNode (
+                new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
+                precedence: 11
+            ));
+        Assert.Equal("( 1 +", tree.Traverse(Traversal.PreOrder));
+    }
+
+    [Fact]
+    public void ShouldClimbUpLefAssocSyntaxNodeIfPrecedenceIsEqualToCurrentNodePrecedence()
+    {
+        var tree = new SyntaxTree(Root)
+            .Insert(new SyntaxNode(
+                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
+                precedence: 10
+            ))
+            .Insert(new SyntaxNode (
+                new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
+                precedence: 10
+            ));
+        Assert.Equal("( + 1", tree.Traverse(Traversal.PreOrder));
+    }
+
+    [Fact]
+    public void ShouldClimbUpLefAssocSyntaxNodeIfPrecedenceIsLessThanCurrentNodePrecedence()
     {
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
