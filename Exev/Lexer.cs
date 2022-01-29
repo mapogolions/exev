@@ -37,33 +37,19 @@ public class Lexer : ILexer
             return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
         }
         if (Current == '(')
-        {
             return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
-        }
         if (Current == ')')
-        {
             return new SyntaxToken(SyntaxKind.CloseParenthesisToken, _position++, ")", null);
-        }
         if (Current == '*')
-        {
             return new SyntaxToken(SyntaxKind.AsteriskToken, _position++, "*", null);
-        }
         if (Current == '/')
-        {
             return new SyntaxToken(SyntaxKind.SlashToken, _position++, "/", null);
-        }
         if (Current == '+')
-        {
             return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
-        }
         if (Current == '-')
-        {
             return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
-        }
         if (Current == '.')
-        {
             return new SyntaxToken(SyntaxKind.DotToken, _position++, ".", null);
-        }
         return new SyntaxToken(SyntaxKind.BadToken, _position++,
             _source.Substring(_position - 1, 1), null);
     }
