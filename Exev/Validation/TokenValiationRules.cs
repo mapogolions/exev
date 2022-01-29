@@ -1,6 +1,7 @@
 using System.Collections;
+using Exev.Syntax;
 
-namespace Exev;
+namespace Exev.Validation;
 
 public class TokenValiationRules : IEnumerable<ITokenValidationRule>
 {

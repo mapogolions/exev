@@ -1,4 +1,6 @@
-namespace Exev;
+using Exev.Syntax;
+
+namespace Exev.Validation;
 
 public interface ITokenValidationRule
 {

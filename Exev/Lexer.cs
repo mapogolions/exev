@@ -1,4 +1,6 @@
-﻿namespace Exev;
+﻿using Exev.Syntax;
+
+namespace Exev;
 
 public class Lexer : ILexer
 {

@@ -1,4 +1,4 @@
-namespace Exev;
+namespace Exev.Syntax;
 
 public static class SyntaxTreeExtensions
 {

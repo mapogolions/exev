@@ -1,4 +1,4 @@
-namespace Exev;
+namespace Exev.Validation;
 
 public class TokenValidationException : Exception
 {
