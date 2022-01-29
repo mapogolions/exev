@@ -39,14 +39,14 @@ public class SyntaxTree
         {
             if (node.MetaInfo == SyntaxNodeInfo.SkipClimbUp) return CurrentNode;
             var currentNode = CurrentNode!;
-            if (node.MetaInfo is SyntaxNodeInfo.None)
+            if (node.MetaInfo == SyntaxNodeInfo.ClimbUp)
             {
-                while (currentNode?.Precedence >= node.Precedence)
+                while (currentNode != null && currentNode.Precedence > node.Precedence)
                     currentNode = currentNode.Parent;
             }
             else
             {
-                while (currentNode?.Precedence > node.Precedence)
+                while (currentNode != null && currentNode.Precedence >= node.Precedence)
                     currentNode = currentNode.Parent;
             }
             return currentNode;
