@@ -1,10 +1,5 @@
 ﻿namespace Exev;
 
-public interface ILexer
-{
-    SyntaxToken NextToken();
-}
-
 public class Lexer : ILexer
 {
     private readonly string _source;
