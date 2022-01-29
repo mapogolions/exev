@@ -56,7 +56,4 @@ public static class SyntaxTreeExtensions
         }
         return Iter(tree.Root, new List<SyntaxNode>());
     }
-
-    // private static bool MustBeIncluded(SyntaxNode node) =>
-    //     !Equals(node.Token, OperatorToken.OpenBracket) && !Equals(node.Token, OperatorToken.CloseBracket);
 }
