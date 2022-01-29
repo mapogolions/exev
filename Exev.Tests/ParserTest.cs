@@ -7,32 +7,48 @@ namespace Exev.Tests;
 
 public class ParserTests
 {
-    // [Theory]
-    // [InlineData("")]
-    // public void ShouldNotBeLastInExpression(string source)
+    // [Fact]
+    // public void OpenParenthesisShouldNotBeTheLastToken()
     // {
-    //     var parser = new Parser(new Lexer(source));
+    //     var parser = new Parser(new Lexer("12 + ("));
+    //     Assert.Throws<TokenValidationException>(parser.Parse);
     // }
+
+    [Fact]
+    public void CloseParenthesisShouldNotBeTheFirstToken()
+    {
+        var parser = new Parser(new Lexer(") 12"));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
+
+    [Fact]
+    public void ShouldWrapNumberTwice()
+    {
+        var parser = new Parser(new Lexer("((1))"));
+        var tree = parser.Parse();
+        var actual = tree.Traverse(Traversal.PreOrder);
+        Assert.Equal("( 1", actual);
+    }
 
     [Fact]
     public void ShouldThrowExceptionIfOpenParenthesisFollowNumber()
     {
         var parser = new Parser(new Lexer("12 ("));
-        Assert.Throws<TokenValidationException>(() => parser.Parse());
+        Assert.Throws<TokenValidationException>(parser.Parse);
     }
 
     [Fact]
     public void ShouldThrowExceptionIfOpenParenthesisFollowCloseParenthesis()
     {
         var parser = new Parser(new Lexer("(1) ("));
-        Assert.Throws<TokenValidationException>(() => parser.Parse());
+        Assert.Throws<TokenValidationException>(parser.Parse);
     }
 
     [Fact]
     public void ShouldThrowExceptionWhenBadTokenFound()
     {
         var parser = new Parser(new Lexer("  \n\t~"));
-        Assert.Throws<TokenValidationException>(() => parser.Parse());
+        Assert.Throws<TokenValidationException>(parser.Parse);
     }
 
     [Fact]

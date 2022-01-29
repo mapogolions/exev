@@ -5,7 +5,7 @@ namespace Exev.Validation;
 public class TokenValidationRule : ITokenValidationRule
 {
     public TokenValidationRule(SyntaxKind kind, Func<SyntaxToken, SyntaxToken, bool> validation,
-        string failureMessage)
+        string failureMessage = "")
     {
         Kind = kind;
         Validation = validation;

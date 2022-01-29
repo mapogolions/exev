@@ -2,9 +2,9 @@ namespace Exev.Syntax;
 
 public static class SyntaxTreeExtensions
 {
-    public static string Traverse(this SyntaxTree tree, Traversal traversal)
+    public static string Traverse(this SyntaxTree tree, Traversal traversal, string sep = " ")
     {
-        return Traverse(tree, traversal, node => node.Token.Text);
+        return Traverse(tree, traversal, node => node.Token.Text, sep);
     }
 
     public static string Traverse(this SyntaxTree tree, Traversal traversal, Func<SyntaxNode, string> selector,

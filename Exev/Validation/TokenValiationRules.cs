@@ -7,12 +7,26 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
 {
     public IEnumerator<ITokenValidationRule> GetEnumerator()
     {
-        yield return new TokenValidationRule(SyntaxKind.OpenParenthesisToken,
-            (pt, ct) => pt.Kind != SyntaxKind.CloseParenthesisToken, "Open bracket cannot be after close bracket");
-        yield return new TokenValidationRule(SyntaxKind.OpenParenthesisToken,
-            (pt, ct) => pt.Kind != SyntaxKind.NumberToken, "Open bracket cannot be after number");
-        // yield return new TokenValidationRule(SyntaxKind.EofToken,
-        //     (pt, ct) => (pt.Kind == SyntaxKind.NumberToken || pt.Kind == SyntaxKind.CloseParenthesisToken), "Open bracket cannot be after number");
+        yield return new TokenValidationRule(
+            SyntaxKind.OpenParenthesisToken,
+            (previousToken, _) => previousToken.Kind != SyntaxKind.CloseParenthesisToken,
+            "Open bracket cannot be after close bracket"
+        );
+        yield return new TokenValidationRule(
+            SyntaxKind.OpenParenthesisToken,
+            (previousToken, ct) => previousToken.Kind != SyntaxKind.NumberToken,
+            "Open bracket cannot be after number"
+        );
+        // yield return new TokenValidationRule(
+        //     SyntaxKind.OpenParenthesisToken,
+        //     (previousToken, _) => ,
+        //     "Close parenthesis should not be the last token"
+        // );
+        yield return new TokenValidationRule(
+            SyntaxKind.CloseParenthesisToken,
+            (previousToken, currentToken) => !object.ReferenceEquals(previousToken, currentToken),
+            "Close bracket can't be the first token"
+        );
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
