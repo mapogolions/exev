@@ -5,7 +5,7 @@ namespace Exev.Tests;
 public class SyntaxTreeTest
 {
     [Fact]
-    public void ShouldSkipClimbUpLeftAssocSyntaxNodeIfPrecedenceIsGreaterCurrentNodePrecedence()
+    public void ShouldSkipClimbUpLeftAssocSyntaxNodeIfPrecedenceIsGreaterThanCurrentNodePrecedence()
     {
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
