@@ -18,11 +18,16 @@ public class Parser : IParser
         var tokens = _tokens.Value;
         var tree = new SyntaxTree(
             new SyntaxNode(
-                new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
-                1,
-                SyntaxNodeInfo.SkipClimbUp
+                token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
+                precedence: 1,
+                metaInfo: SyntaxNodeInfo.SkipClimbUp
             )
         );
+        while (true)
+        {
+            if (Current.Kind == SyntaxKind.EofToken) break;
+            if (TryMatch(SyntaxKind.SpaceToken, out _)) continue;
+        }
         return tree;
     }
 
@@ -63,10 +68,8 @@ public class Parser : IParser
     private SyntaxToken Peek(int offset)
     {
         var index = _position + offset;
-        if (index >= _tokens.Value.Count)
-        {
-            return _tokens.Value[_tokens.Value.Count - 1];
-        }
+        if (index < 0) return _tokens.Value[0];
+        if (index >= _tokens.Value.Count) return _tokens.Value[_tokens.Value.Count - 1];
         return _tokens.Value[index];
     }
 }
