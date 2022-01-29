@@ -5,7 +5,7 @@ public class Parser : IParser
     private int _position;
     private readonly Lazy<IList<SyntaxToken>> _tokens;
     private readonly ILexer _lexer;
-
+    private readonly TokenValiationRules _tokenValidationRules = new TokenValiationRules();
 
     public Parser(ILexer lexer)
     {
@@ -23,23 +23,19 @@ public class Parser : IParser
                 metaInfo: SyntaxNodeInfo.SkipClimbUp
             )
         );
-        SyntaxNode? currentNode = tree.Root;
-        SyntaxToken? previousToken = null;
+        SyntaxNode? currentNode = null;
         while (true)
         {
             if (Current.Kind == SyntaxKind.BadToken) throw new InvalidDataException();
             if (Current.Kind == SyntaxKind.EofToken) break;
-            if (TryMatch(SyntaxKind.SpaceToken, out _)) continue;
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
-            {
-                previousToken = Peek(-1);
-                if (previousToken.Kind == SyntaxKind.CloseParenthesisToken)
-                    throw new InvalidDataException("Open bracket cannot be after close bracket");
-                if (previousToken.Kind == SyntaxKind.NumberToken)
-                    throw new InvalidDataException("Open bracket cannot be after number");
                 currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.SkipClimbUp);
-            }
-            else throw new InvalidDataException();
+            else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
+                currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.RightAssoc);
+            else if (TryMatch(SyntaxKind.NumberToken, out token))
+                currentNode = new SyntaxNode(token!, 10);
+            else
+                throw new InvalidDataException();
             tree.Insert(currentNode);
         }
         return tree;
@@ -49,7 +45,9 @@ public class Parser : IParser
     {
         if (Current.Kind == kind)
         {
+            var previousToken = Peek(-1);
             token = GetCurrentAndMoveToNext();
+            _tokenValidationRules.Validate(previousToken, token!);
             return true;
         }
         token = null;
@@ -63,16 +61,21 @@ public class Parser : IParser
         return current;
     }
 
-
     private IList<SyntaxToken> GetSyntaxTokens()
     {
         var tokens = new List<SyntaxToken>();
         var token = _lexer.NextToken();
-        tokens.Add(token);
+        if (token.Kind != SyntaxKind.SpaceToken)
+        {
+            tokens.Add(token);
+        }
         while (token.Kind != SyntaxKind.EofToken)
         {
             token = _lexer.NextToken();
-            tokens.Add(token);
+            if (token.Kind != SyntaxKind.SpaceToken)
+            {
+                tokens.Add(token);
+            }
         }
         return tokens;
     }

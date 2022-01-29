@@ -5,18 +5,25 @@ namespace Exev.Tests;
 
 public class ParserTests
 {
+    // [Theory]
+    // [InlineData("")]
+    // public void ShouldNotBeLastInExpression(string source)
+    // {
+    //     var parser = new Parser(new Lexer(source));
+    // }
+
     [Fact]
     public void ShouldThrowExceptionIfOpenParenthesisFollowNumber()
     {
-        var parser = new Parser(new Lexer("( 12 ("));
-        Assert.Throws<InvalidDataException>(() => parser.Parse());
+        var parser = new Parser(new Lexer("12 ("));
+        Assert.Throws<TokenValidationException>(() => parser.Parse());
     }
 
     [Fact]
     public void ShouldThrowExceptionIfOpenParenthesisFollowCloseParenthesis()
     {
-        var parser = new Parser(new Lexer("( ) ("));
-        Assert.Throws<InvalidDataException>(() => parser.Parse());
+        var parser = new Parser(new Lexer("(1) ("));
+        Assert.Throws<TokenValidationException>(() => parser.Parse());
     }
 
     [Fact]
