@@ -5,19 +5,18 @@ namespace Exev;
 
 public class Parser : IParser
 {
-    private readonly ICursor _ptr;
+    private readonly ITokensCollection _tokens;
     private readonly ILexer _lexer;
     private readonly TokenValiationRules _tokenValidationRules = new TokenValiationRules();
 
     public Parser(ILexer lexer)
     {
         _lexer = lexer;
-        _ptr = new Cursor(GetSyntaxTokens());
+        _tokens = new TokensCollection(GetSyntaxTokens());
     }
 
     public SyntaxTree Parse()
     {
-        var tokens = _ptr.Tokens;
         var tree = new SyntaxTree(
             new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
@@ -28,7 +27,8 @@ public class Parser : IParser
         SyntaxNode? currentNode = null;
         while (true)
         {
-            if (_ptr.Current.Kind == SyntaxKind.EofToken) break;
+            _tokenValidationRules.Validate(_tokens);
+            if (_tokens.Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
                 currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.SkipClimbUp);
             else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
@@ -38,7 +38,7 @@ public class Parser : IParser
             else if (TryMatch(SyntaxKind.PlusToken, out token))
                 currentNode = new SyntaxNode(token!, 2);
             else
-                throw new TokenValidationException($"Unexpected token {_ptr.Current.Text} was found");
+                throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");
             tree.Insert(currentNode);
         }
         return tree;
@@ -46,11 +46,9 @@ public class Parser : IParser
 
     private bool TryMatch(SyntaxKind kind, out SyntaxToken? token)
     {
-        if (_ptr.Current.Kind == kind)
+        if (_tokens.Current.Kind == kind)
         {
-            var previousToken = _ptr.Peek(-1);
-            token = _ptr.NextToken();
-            _tokenValidationRules.Validate(previousToken, token!);
+            token = _tokens.NextToken();
             return true;
         }
         token = null;

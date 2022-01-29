@@ -7,12 +7,12 @@ namespace Exev.Tests;
 
 public class ParserTests
 {
-    // [Fact]
-    // public void OpenParenthesisShouldNotBeTheLastToken()
-    // {
-    //     var parser = new Parser(new Lexer("12 + ("));
-    //     Assert.Throws<TokenValidationException>(parser.Parse);
-    // }
+    [Fact]
+    public void OpenParenthesisShouldNotBeTheLastToken()
+    {
+        var parser = new Parser(new Lexer("12 + ("));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
 
     [Fact]
     public void CloseParenthesisShouldNotBeTheFirstToken()

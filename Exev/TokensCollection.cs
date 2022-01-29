@@ -1,21 +1,22 @@
+using System.Collections;
 using Exev.Syntax;
 
 namespace Exev;
 
-public class Cursor : ICursor
+public class TokensCollection : ITokensCollection
 {
     private int _position;
     private readonly IReadOnlyList<SyntaxToken> _tokens;
 
-    public Cursor(IReadOnlyList<SyntaxToken> tokens)
+    public TokensCollection(IReadOnlyList<SyntaxToken> tokens)
     {
         _tokens = tokens;
         _position = 0;
     }
 
-    public IReadOnlyList<SyntaxToken> Tokens => _tokens;
-
     public SyntaxToken Current => Peek(0);
+    public SyntaxToken Previous => Peek(-1);
+    public SyntaxToken Next => Peek(1);
 
     public SyntaxToken Peek(int offset)
     {
@@ -31,4 +32,8 @@ public class Cursor : ICursor
         _position++;
         return current;
     }
+
+    public IEnumerator<SyntaxToken> GetEnumerator() => _tokens.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

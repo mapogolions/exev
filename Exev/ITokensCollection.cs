@@ -2,10 +2,11 @@ using Exev.Syntax;
 
 namespace Exev;
 
-public interface ICursor
+public interface ITokensCollection : IEnumerable<SyntaxToken>
 {
-    IReadOnlyList<SyntaxToken> Tokens { get; }
     SyntaxToken Current { get; }
+    SyntaxToken Previous { get; }
+    SyntaxToken Next { get; }
     SyntaxToken Peek(int offset);
     SyntaxToken NextToken();
 }

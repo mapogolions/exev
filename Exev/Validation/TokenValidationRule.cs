@@ -4,7 +4,7 @@ namespace Exev.Validation;
 
 public class TokenValidationRule : ITokenValidationRule
 {
-    public TokenValidationRule(SyntaxKind kind, Func<SyntaxToken, SyntaxToken, bool> validation,
+    public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation,
         string failureMessage = "")
     {
         Kind = kind;
@@ -14,16 +14,16 @@ public class TokenValidationRule : ITokenValidationRule
 
     public SyntaxKind Kind { get; }
 
-    public Func<SyntaxToken, SyntaxToken, bool> Validation { get; }
+    public Func<ITokensCollection, bool> Validation { get; }
 
     public string FailureMessage { get; }
 
 
-    public void Validate(SyntaxToken previousToken, SyntaxToken currentToken)
+    public void Validate(ITokensCollection tokens)
     {
-        if(Kind == currentToken.Kind)
+        if(Kind == tokens.Current.Kind)
         {
-            if (!Validation.Invoke(previousToken, currentToken))
+            if (!Validation.Invoke(tokens))
             {
                 throw new TokenValidationException(FailureMessage);
             }
