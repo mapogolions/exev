@@ -7,7 +7,8 @@ public static class SyntaxTreeExtensions
         return Traverse(tree, traversal, node => node.Token.Text);
     }
 
-    public static string Traverse(this SyntaxTree tree, Traversal traversal, Func<SyntaxNode, string> selector, string sep = " ")
+    public static string Traverse(this SyntaxTree tree, Traversal traversal, Func<SyntaxNode, string> selector,
+        string sep = " ")
     {
         var nodes = traversal switch
         {
