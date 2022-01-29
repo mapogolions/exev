@@ -15,9 +15,7 @@ public class Lexer : ILexer
     public SyntaxToken NextToken()
     {
         if (Current == '\0')
-        {
             return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
-        }
         if (char.IsDigit(Current))
         {
             var start = _position;
