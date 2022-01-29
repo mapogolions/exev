@@ -25,6 +25,7 @@ public class Parser : IParser
         );
         while (true)
         {
+            if (Current.Kind == SyntaxKind.BadToken) throw new InvalidDataException();
             if (Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.SpaceToken, out _)) continue;
         }

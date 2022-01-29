@@ -1,9 +1,17 @@
+using System.IO;
 using Xunit;
 
 namespace Exev.Tests;
 
 public class ParserTests
 {
+    [Fact]
+    public void SholdThrowExceptionWhenBadTokenFound()
+    {
+        var parser = new Parser(new Lexer("  \n\t~"));
+        Assert.Throws<InvalidDataException>(() => parser.Parse());
+    }
+
     [Fact]
     public void ShouldSkipWhitespacesAndReturnSyntaxTreeWithFakeRoot()
     {
