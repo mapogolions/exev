@@ -30,7 +30,7 @@ public class ParserTests
     public void ShouldThrowExceptionWhenBadTokenFound()
     {
         var parser = new Parser(new Lexer("  \n\t~"));
-        Assert.Throws<InvalidDataException>(() => parser.Parse());
+        Assert.Throws<TokenValidationException>(() => parser.Parse());
     }
 
     [Fact]

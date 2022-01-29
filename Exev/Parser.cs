@@ -26,7 +26,6 @@ public class Parser : IParser
         SyntaxNode? currentNode = null;
         while (true)
         {
-            if (Current.Kind == SyntaxKind.BadToken) throw new InvalidDataException();
             if (Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
                 currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.SkipClimbUp);
@@ -35,7 +34,7 @@ public class Parser : IParser
             else if (TryMatch(SyntaxKind.NumberToken, out token))
                 currentNode = new SyntaxNode(token!, 10);
             else
-                throw new InvalidDataException();
+                throw new TokenValidationException($"Unexpected token {Current.Text} was found");
             tree.Insert(currentNode);
         }
         return tree;
