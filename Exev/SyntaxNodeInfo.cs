@@ -2,7 +2,7 @@ namespace Exev;
 
 public enum SyntaxNodeInfo
 {
-	NoInfo,
+	None,
 	SkipClimbUp,
-	RightAssociative
+	ClimbUp
 }

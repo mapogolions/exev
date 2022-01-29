@@ -17,15 +17,28 @@ public class Parser : IParser
     {
         var tokens = _tokens.Value;
         var tree = new SyntaxTree(
-            new SyntaxNode
-            {
-                Token = new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null)
-            }
+            new SyntaxNode(
+                new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
+                10,
+                SyntaxNodeInfo.SkipClimbUp
+            )
         );
         while (true)
         {
+            SyntaxNode? node = null;
             if (Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.SpaceToken, out var token)) continue;
+            if (TryMatch(SyntaxKind.OpenParenthesisToken, out token))
+                node = new SyntaxNode(token!, 1, SyntaxNodeInfo.SkipClimbUp);
+            else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
+                node = new SyntaxNode(token!, 1, SyntaxNodeInfo.ClimbUp);
+            else if (TryMatch(SyntaxKind.AsteriskToken, out token))
+                node = new SyntaxNode(token!, 4, SyntaxNodeInfo.SkipClimbUp);
+            else if (TryMatch(SyntaxKind.SlashToken, out token))
+                node = new SyntaxNode(token!, 4, SyntaxNodeInfo.SkipClimbUp);
+            else if (TryMatch(SyntaxKind.NumberToken, out token))
+                node = new SyntaxNode(token!, 10, SyntaxNodeInfo.None);
+            else throw new InvalidOperationException();
         }
         return tree;
     }
