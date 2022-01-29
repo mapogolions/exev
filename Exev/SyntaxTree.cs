@@ -25,12 +25,12 @@ public class SyntaxTree
         var currentNode = CurrentNode!;
         if (node.MetaInfo is SyntaxNodeInfo.LeftAssoc)
         {
-            while (currentNode != Root && currentNode!.Precedence >= node.Precedence)
+            while (currentNode != Root && node.Precedence <= currentNode!.Precedence)
                 currentNode = currentNode.Parent;
         }
         else
         {
-            while (currentNode != Root && currentNode!.Precedence > node.Precedence)
+            while (currentNode != Root && node.Precedence < currentNode!.Precedence)
                 currentNode = currentNode.Parent;
         }
         return currentNode;

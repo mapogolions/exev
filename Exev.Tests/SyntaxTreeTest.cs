@@ -5,6 +5,22 @@ namespace Exev.Tests;
 public class SyntaxTreeTest
 {
     [Fact]
+    public void ShouldSkipClimbUpIfSpecifiedExplicitly()
+    {
+        var tree = new SyntaxTree(Root)
+            .Insert(new SyntaxNode(
+                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
+                precedence: 10
+            ))
+            .Insert(new SyntaxNode (
+                new SyntaxToken(SyntaxKind.PlusToken, -1, "(", null),
+                precedence: 1,
+                SyntaxNodeInfo.SkipClimbUp
+            ));
+        Assert.Equal("( 1 (", tree.Traverse(Traversal.PreOrder));
+    }
+
+    [Fact]
     public void ShouldSkipClimbUpLeftAssocSyntaxNodeIfPrecedenceIsGreaterThanCurrentNodePrecedence()
     {
         var tree = new SyntaxTree(Root)
