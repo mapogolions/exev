@@ -1,6 +1,6 @@
 namespace Exev;
 
-public class Parser
+public class Parser : IParser
 {
     private int _position;
     private readonly Lazy<IList<SyntaxToken>> _tokens;
