@@ -6,7 +6,21 @@ namespace Exev.Tests;
 public class ParserTests
 {
     [Fact]
-    public void SholdThrowExceptionWhenBadTokenFound()
+    public void ShouldThrowExceptionIfOpenParenthesisFollowNumber()
+    {
+        var parser = new Parser(new Lexer("( 12 ("));
+        Assert.Throws<InvalidDataException>(() => parser.Parse());
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionIfOpenParenthesisFollowCloseParenthesis()
+    {
+        var parser = new Parser(new Lexer("( ) ("));
+        Assert.Throws<InvalidDataException>(() => parser.Parse());
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionWhenBadTokenFound()
     {
         var parser = new Parser(new Lexer("  \n\t~"));
         Assert.Throws<InvalidDataException>(() => parser.Parse());

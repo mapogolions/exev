@@ -5,6 +5,18 @@ namespace Exev.Tests;
 public class SyntaxTreeTest
 {
     [Fact]
+    public void ShouldNotRemoveRoot()
+    { // + - 1
+        var tree = new SyntaxTree(Root)
+            .Insert(new SyntaxNode (
+                new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
+                precedence: 1,
+                metaInfo: SyntaxNodeInfo.RightAssoc
+            ));
+        Assert.Equal("(", tree.Traverse(Traversal.PreOrder));
+    }
+
+    [Fact]
     public void ShouldRemoveOpenParenthesis()
     { // + - 1
         var tree = new SyntaxTree(Root)

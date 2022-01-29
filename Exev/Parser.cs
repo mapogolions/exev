@@ -23,11 +23,24 @@ public class Parser : IParser
                 metaInfo: SyntaxNodeInfo.SkipClimbUp
             )
         );
+        SyntaxNode? currentNode = tree.Root;
+        SyntaxToken? previousToken = null;
         while (true)
         {
             if (Current.Kind == SyntaxKind.BadToken) throw new InvalidDataException();
             if (Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.SpaceToken, out _)) continue;
+            if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
+            {
+                previousToken = Peek(-1);
+                if (previousToken.Kind == SyntaxKind.CloseParenthesisToken)
+                    throw new InvalidDataException("Open bracket cannot be after close bracket");
+                if (previousToken.Kind == SyntaxKind.NumberToken)
+                    throw new InvalidDataException("Open bracket cannot be after number");
+                currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.SkipClimbUp);
+            }
+            else throw new InvalidDataException();
+            tree.Insert(currentNode);
         }
         return tree;
     }
