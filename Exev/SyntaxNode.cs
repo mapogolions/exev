@@ -3,7 +3,7 @@ namespace Exev;
 public class SyntaxNode
 {
     public SyntaxNode(SyntaxToken token, int precedence,
-        SyntaxNodeInfo metaInfo = SyntaxNodeInfo.None)
+        SyntaxNodeInfo metaInfo = SyntaxNodeInfo.LeftAssoc)
     {
         Token = token;
         Precedence = precedence;
