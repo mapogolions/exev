@@ -15,16 +15,30 @@ public class Parser : IParser
 
     public SyntaxTree Parse()
     {
-        throw new NotImplementedException();
+        var tokens = _tokens.Value;
+        var tree = new SyntaxTree(
+            new SyntaxNode
+            {
+                Token = new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null)
+            }
+        );
+        while (true)
+        {
+            if (Current.Kind == SyntaxKind.EofToken) break;
+            if (TryMatch(SyntaxKind.SpaceToken, out var token)) continue;
+        }
+        return tree;
     }
 
-    private SyntaxToken Match(SyntaxKind kind)
+    private bool TryMatch(SyntaxKind kind, out SyntaxToken? token)
     {
         if (Current.Kind == kind)
         {
-            return GetCurrentAndMoveToNext();
+            token = GetCurrentAndMoveToNext();
+            return true;
         }
-        throw new NotImplementedException();
+        token = null;
+        return false;
     }
 
     private SyntaxToken GetCurrentAndMoveToNext()
@@ -39,17 +53,18 @@ public class Parser : IParser
     {
         var tokens = new List<SyntaxToken>();
         var token = _lexer.NextToken();
+        tokens.Add(token);
         while (token.Kind != SyntaxKind.EofToken)
         {
-            tokens.Add(token);
             token = _lexer.NextToken();
+            tokens.Add(token);
         }
         return tokens;
     }
 
     private SyntaxToken Current => Peek(0);
 
-    private SyntaxToken Peek(int offset )
+    private SyntaxToken Peek(int offset)
     {
         var index = _position + offset;
         if (index >= _tokens.Value.Count)
