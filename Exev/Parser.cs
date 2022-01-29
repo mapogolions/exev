@@ -7,12 +7,13 @@ public class Parser : IParser
 {
     private readonly ITokensCollection _tokens;
     private readonly ILexer _lexer;
-    private readonly TokenValiationRules _tokenValidationRules = new TokenValiationRules();
+    private readonly TokenValiationRules _tokenValidationRules;
 
     public Parser(ILexer lexer)
     {
         _lexer = lexer;
         _tokens = new TokensCollection(GetSyntaxTokens());
+        _tokenValidationRules = new TokenValiationRules();
     }
 
     public SyntaxTree Parse()
