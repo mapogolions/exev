@@ -17,6 +17,28 @@ public class LexerTests
     }
 
     [Fact]
+    public void ShouldReturnFactorialToken()
+    {
+        var token = new Lexer("!").NextToken();
+
+        Assert.Equal(SyntaxKind.FactorialToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("!", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
+    public void ShouldReturnExponentToken()
+    {
+        var token = new Lexer("^").NextToken();
+
+        Assert.Equal(SyntaxKind.ExponentToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("^", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
     public void ShouldReturnBadToken()
     {
         var token = new Lexer("?").NextToken();

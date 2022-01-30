@@ -46,7 +46,7 @@ public class Lexer : ILexer
         if (Current == '!')
             return new SyntaxToken(SyntaxKind.FactorialToken, _position++, "!", null);
         if (Current == '^')
-            return new SyntaxToken(SyntaxKind.ExponentToken, _position++, "!", null);
+            return new SyntaxToken(SyntaxKind.ExponentToken, _position++, "^", null);
         if (Current == '.')
             return new SyntaxToken(SyntaxKind.DotToken, _position++, ".", null);
         return new SyntaxToken(SyntaxKind.BadToken, _position++,
