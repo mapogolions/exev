@@ -37,7 +37,13 @@ public class Parser : IParser
             else if (TryMatch(SyntaxKind.NumberToken, out token))
                 currentNode = new SyntaxNode(token!, 10);
             else if (TryMatch(SyntaxKind.PlusToken, out token))
-                currentNode = new SyntaxNode(token!, 2);
+            {
+                var kind = _tokens.Previous.Kind;
+                if (kind == SyntaxKind.NumberToken || kind == SyntaxKind.CloseParenthesisToken)
+                    currentNode = new SyntaxNode(token!, 2);
+                else
+                    currentNode = new SyntaxNode(token!, 3, SyntaxNodeInfo.SkipClimbUp);
+    		}
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");
             tree.Insert(currentNode);
