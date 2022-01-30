@@ -36,7 +36,7 @@ public class Parser : IParser
                 currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.RightAssoc);
             else if (TryMatch(SyntaxKind.NumberToken, out token))
                 currentNode = new SyntaxNode(token!, 10);
-            else if (TryMatch(SyntaxKind.PlusToken, out token))
+            else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))
             {
                 var kind = _tokens.Previous.Kind;
                 if (kind == SyntaxKind.NumberToken || kind == SyntaxKind.CloseParenthesisToken)
