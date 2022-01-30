@@ -20,12 +20,17 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
             tokens => tokens.Next.Kind != SyntaxKind.EofToken,
-            "Close parenthesis should not be the last token"
+            "Open parenthesis should not be the last token"
         );
         yield return new TokenValidationRule(
             SyntaxKind.CloseParenthesisToken,
             tokens => !object.ReferenceEquals(tokens.Previous, tokens.Current),
             "Close bracket can't be the first token"
+        );
+        yield return new TokenValidationRule(
+            SyntaxKind.CloseParenthesisToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.OpenParenthesisToken,
+            "Close parethesis afer open"
         );
     }
 

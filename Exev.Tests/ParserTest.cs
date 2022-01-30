@@ -8,6 +8,13 @@ namespace Exev.Tests;
 public class ParserTests
 {
     [Fact]
+    public void CloseParenthesisShouldNotBeAfterOpen()
+    {
+        var parser = new Parser(new Lexer("()"));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
+
+    [Fact]
     public void OpenParenthesisShouldNotBeTheLastToken()
     {
         var parser = new Parser(new Lexer("12 + ("));
