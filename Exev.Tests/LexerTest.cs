@@ -5,6 +5,44 @@ namespace Exev.Tests;
 
 public class LexerTests
 {
+    [Fact]
+    public void ShouldBeAbleParseNext()
+    {
+        var lexer = new Lexer("12. 12");
+        var badToken = lexer.NextToken();
+        var spaceToken = lexer.NextToken();
+        var numberToken = lexer.NextToken();
+
+        Assert.Equal(SyntaxKind.BadToken, badToken.Kind);
+        Assert.Equal("12.", badToken.Text);
+        Assert.Equal(SyntaxKind.SpaceToken, spaceToken.Kind);
+        Assert.Equal(" ", spaceToken.Text);
+        Assert.Equal(SyntaxKind.NumberToken, numberToken.Kind);
+        Assert.Equal("12", numberToken.Text);
+    }
+
+    [Fact]
+    public void ShouldReturnBadTokenIfInvalidFormatOfNumber()
+    {
+        var token = new Lexer("12.").NextToken();
+
+        Assert.Equal(SyntaxKind.BadToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("12.", token.Text);
+        Assert.Null(token.Value);
+    }
+
+    [Fact]
+    public void ShouldReturnFloatingPointNumber()
+    {
+        var token = new Lexer("12.2").NextToken();
+
+        Assert.Equal(SyntaxKind.NumberToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal("12.2", token.Text);
+        Assert.Equal(12.2, token.Value);
+    }
+
     [Theory]
     [InlineData("f", "f")]
     [InlineData("foo", "foo")]

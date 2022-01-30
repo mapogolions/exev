@@ -20,6 +20,15 @@ public class Lexer : ILexer
         {
             var start = _position;
             while (char.IsDigit(Current)) _position++;
+            if (Current == '.')
+            {
+                var index = ++_position;
+                while (char.IsDigit(Current)) _position++;
+                var txt = _source.Substring(start, _position - start);
+                return index == _position
+                    ? new SyntaxToken(SyntaxKind.BadToken, start, txt, null)
+                    : new SyntaxToken(SyntaxKind.NumberToken, start, txt, double.Parse(txt));
+            }
             var text = _source.Substring(start, _position - start);
             var value = int.Parse(text);
             return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
