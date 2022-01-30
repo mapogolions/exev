@@ -12,6 +12,9 @@ public class TokenValidationRule : ITokenValidationRule
         FailureMessage = failureMessage;
     }
 
+    public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation)
+        : this(kind, validation, $"Unexpected {kind}") { }
+
     public SyntaxKind Kind { get; }
 
     public Func<ITokensCollection, bool> Validation { get; }

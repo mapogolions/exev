@@ -37,15 +37,30 @@ public class ParserTests
         Assert.Equal("( 1", actual);
     }
 
+
     [Fact]
-    public void ShouldThrowExceptionIfOpenParenthesisFollowNumber()
+    public void ShouldThrowExceptionIfNumberFollowsCloseParenthesis()
+    {
+        var parser = new Parser(new Lexer("(1) 23"));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionIfNumberFollowsFactorial()
+    {
+        var parser = new Parser(new Lexer("12! 23"));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionIfOpenParenthesisFollowsNumber()
     {
         var parser = new Parser(new Lexer("12 ("));
         Assert.Throws<TokenValidationException>(parser.Parse);
     }
 
     [Fact]
-    public void ShouldThrowExceptionIfOpenParenthesisFollowCloseParenthesis()
+    public void ShouldThrowExceptionIfOpenParenthesisFollowsClose()
     {
         var parser = new Parser(new Lexer("(1) ("));
         Assert.Throws<TokenValidationException>(parser.Parse);
@@ -59,7 +74,7 @@ public class ParserTests
     }
 
     [Fact]
-    public void ShouldSkipWhitespacesAndReturnSyntaxTreeWithFakeRoot()
+    public void ShouldSkipWhitespacesAndReturnSyntaxTree()
     {
         var parser = new Parser(new Lexer("  \n\t"));
         var tree = parser.Parse();
@@ -70,7 +85,7 @@ public class ParserTests
     }
 
     [Fact]
-    public void ShouldReturnSyntaxTreeWithFakeRoot()
+    public void ShouldReturnSyntaxTreeWithOpenParenthesisAsRoot()
     {
         var parser = new Parser(new Lexer(""));
         var tree = parser.Parse();

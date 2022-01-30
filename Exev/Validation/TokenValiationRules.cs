@@ -8,29 +8,32 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
     public IEnumerator<ITokenValidationRule> GetEnumerator()
     {
         yield return new TokenValidationRule(
-            SyntaxKind.OpenParenthesisToken,
-            tokens => tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken,
-            "Open parenthesis cannot be after close parenthesis"
+            SyntaxKind.NumberToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
+        );
+        yield return new TokenValidationRule(
+            SyntaxKind.NumberToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.FactorialToken
         );
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
-            tokens => tokens.Previous.Kind != SyntaxKind.NumberToken,
-            "Open parenthesis cannot be after number"
+            tokens => tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
         );
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
-            tokens => tokens.Next.Kind != SyntaxKind.EofToken,
-            "Open parenthesis should not be the last token"
+            tokens => tokens.Previous.Kind != SyntaxKind.NumberToken
+        );
+        yield return new TokenValidationRule(
+            SyntaxKind.OpenParenthesisToken,
+            tokens => tokens.Next.Kind != SyntaxKind.EofToken
         );
         yield return new TokenValidationRule(
             SyntaxKind.CloseParenthesisToken,
-            tokens => !object.ReferenceEquals(tokens.Previous, tokens.Current),
-            "Close parenthesis can't be the first token"
+            tokens => !object.ReferenceEquals(tokens.Previous, tokens.Current)
         );
         yield return new TokenValidationRule(
             SyntaxKind.CloseParenthesisToken,
-            tokens => tokens.Previous.Kind != SyntaxKind.OpenParenthesisToken,
-            "Close parethesis afer open"
+            tokens => tokens.Previous.Kind != SyntaxKind.OpenParenthesisToken
         );
     }
 
