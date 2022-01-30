@@ -1,5 +1,6 @@
 ### How to use
 ```sh
+dotnet run --project Exev.App/Exev.App.csproj
 dotnet test
 ```
 
