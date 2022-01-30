@@ -1,6 +1,6 @@
 namespace Exev.Syntax;
 
-public enum SyntaxKind
+public enum TokenKind
 {
     NumberToken,
     SpaceToken,
@@ -14,4 +14,15 @@ public enum SyntaxKind
     LiteralToken,
     ExponentToken,
     BadToken,
+    FunctionNameToken
+}
+
+public enum NodeKind
+{
+    UnaryPlus,
+    UnaryMinus,
+    Multiplication,
+    Division,
+    Addition,
+    Subtration
 }

@@ -35,7 +35,7 @@ public class Lexer : ILexer
         if (Current == '-')
             return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
         if (Current == '!')
-            return new SyntaxToken(SyntaxKind.FactorialToken, _position++, "!", null);
+            return new SyntaxToken(SyntaxKind.LiteralToken, _position++, "!", null);
         if (Current == '^')
             return new SyntaxToken(SyntaxKind.ExponentToken, _position++, "^", null);
         return new SyntaxToken(SyntaxKind.BadToken, _position++,
@@ -73,7 +73,7 @@ public class Lexer : ILexer
         var start = _position;
         while (char.IsLetterOrDigit(Current)) _position++;
         var text = _source.Substring(start, _position - start);
-        return new SyntaxToken(SyntaxKind.FunctionNameToken, start, text, null);
+        return new SyntaxToken(SyntaxKind.LiteralToken, start, text, null);
     }
 
     private char Current

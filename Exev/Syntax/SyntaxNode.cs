@@ -18,3 +18,15 @@ public class SyntaxNode
     public SyntaxNode? Left { get; set; }
     public SyntaxNode? Right { get; set; }
 }
+
+public enum BoundSyntaxKind
+{
+    Addition,
+    Subtruction,
+    Negitiation,
+    Mutliplication,
+    Division,
+    Exponent,
+    Factorial,
+
+}
