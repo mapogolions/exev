@@ -7,7 +7,6 @@ public class Evaluator : IEvaluator
     public double Evaluate(SyntaxTree tree)
     {
         return EvaluateExpression(tree.Root.Right);
-
     }
 
     public double EvaluateExpression(SyntaxNode? node)

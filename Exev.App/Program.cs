@@ -11,10 +11,17 @@ internal static class Program
         {
             Console.Write("> ");
             var source = Console.ReadLine();
-            if (string.IsNullOrEmpty(source)) continue;
-            var tree = new Parser(new Lexer(source)).Parse();
-            var result = evaluator.Evaluate(tree);
-            Console.WriteLine(result);
+            try
+            {
+                if (string.IsNullOrEmpty(source)) continue;
+                var tree = new Parser(new Lexer(source)).Parse();
+                var result = evaluator.Evaluate(tree);
+                Console.WriteLine(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
