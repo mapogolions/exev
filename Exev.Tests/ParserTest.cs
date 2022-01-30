@@ -1,4 +1,3 @@
-using System.IO;
 using Exev.Syntax;
 using Exev.Validation;
 using Xunit;
@@ -37,6 +36,44 @@ public class ParserTests
         Assert.Equal("( 1", actual);
     }
 
+    [Theory]
+    [InlineData("12")]
+    [InlineData("12!")]
+    [InlineData("(12)")]
+    public void ShouldTreatAsValidEnd(string source)
+    {
+        var parser = new Parser(new Lexer(source));
+        _ = parser.Parse();
+        Assert.True(true);
+    }
+
+    [Theory]
+    [InlineData("-")]
+    [InlineData("+")]
+    [InlineData("(")]
+    [InlineData("*")]
+    [InlineData("/")]
+    [InlineData("^")]
+    public void ShouldThrowExceptionIfEndIsInvalid(string source)
+    {
+        var parser = new Parser(new Lexer(source));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
+
+    [Theory]
+    [InlineData("!")]
+    [InlineData("-")]
+    [InlineData("+")]
+    [InlineData("*")]
+    [InlineData("/")]
+    [InlineData("(")]
+    [InlineData(")")]
+    [InlineData("^")]
+    public void ShouldThrowExceptionSingleTokenIsNotNumber(string source)
+    {
+        var parser = new Parser(new Lexer(source));
+        Assert.Throws<TokenValidationException>(parser.Parse);
+    }
 
     [Fact]
     public void ShouldThrowExceptionIfNumberFollowsCloseParenthesis()

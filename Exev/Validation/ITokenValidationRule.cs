@@ -4,5 +4,5 @@ namespace Exev.Validation;
 
 public interface ITokenValidationRule
 {
-    void Validate(ITokensCollection tokens);
+    void Validate(SyntaxKind? kind, ITokensCollection tokens);
 }

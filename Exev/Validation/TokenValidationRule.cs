@@ -4,30 +4,30 @@ namespace Exev.Validation;
 
 public class TokenValidationRule : ITokenValidationRule
 {
-    public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation,
+    public TokenValidationRule(SyntaxKind? kind, Func<ITokensCollection, bool> violation,
         Func<ITokensCollection, string> failure)
     {
         Kind = kind;
-        Validation = validation;
+        Violation = violation;
         Failure = failure;
     }
 
-    public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation)
-        : this (kind, validation,
+    public TokenValidationRule(SyntaxKind? kind, Func<ITokensCollection, bool> violation)
+        : this (kind, violation,
         tokens => $"Unexpected {tokens.Current.Kind} follows {tokens.Previous.Kind}: {tokens.Previous.Text}{tokens.Current.Text}") { }
 
-    public SyntaxKind Kind { get; }
+    public SyntaxKind? Kind { get; }
 
-    public Func<ITokensCollection, bool> Validation { get; }
+    public Func<ITokensCollection, bool> Violation { get; }
 
     public Func<ITokensCollection, string> Failure { get; }
 
 
-    public void Validate(ITokensCollection tokens)
+    public void Validate(SyntaxKind? kind, ITokensCollection tokens)
     {
-        if(Kind == tokens.Current.Kind)
+        if(Kind == kind)
         {
-            if (!Validation.Invoke(tokens))
+            if (Violation.Invoke(tokens))
             {
                 throw new TokenValidationException(Failure(tokens));
             }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Exev.Syntax;
 using Exev.Validation;
 
@@ -7,13 +8,13 @@ public class Parser : IParser
 {
     private readonly ITokensCollection _tokens;
     private readonly ILexer _lexer;
-    private readonly TokenValiationRules _tokenValidationRules;
+    private readonly TokenValiationRules _validationRules;
 
     public Parser(ILexer lexer)
     {
         _lexer = lexer;
-        _tokens = new TokensCollection(GetSyntaxTokens());
-        _tokenValidationRules = new TokenValiationRules();
+        _tokens = new TokensCollection(GetSyntaxTokens().ToList());
+        _validationRules = new TokenValiationRules();
     }
 
     public SyntaxTree Parse()
@@ -27,9 +28,10 @@ public class Parser : IParser
             )
         );
         SyntaxNode? currentNode = null;
+        _validationRules.Validate(null, _tokens);
         while (true)
         {
-            _tokenValidationRules.Validate(_tokens);
+            _validationRules.Validate(_tokens.Current.Kind, _tokens);
             if (_tokens.Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
                 currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, Assoc.None);
@@ -74,22 +76,15 @@ public class Parser : IParser
         return false;
     }
 
-    private IReadOnlyList<SyntaxToken> GetSyntaxTokens()
+    private IEnumerable<SyntaxToken> GetSyntaxTokens()
     {
-        var tokens = new List<SyntaxToken>();
-        var token = _lexer.NextToken();
-        if (token.Kind != SyntaxKind.SpaceToken)
-        {
-            tokens.Add(token);
-        }
-        while (token.Kind != SyntaxKind.EofToken)
+        SyntaxToken? token = null;
+        do
         {
             token = _lexer.NextToken();
-            if (token.Kind != SyntaxKind.SpaceToken)
-            {
-                tokens.Add(token);
-            }
+            if (token.Kind == SyntaxKind.SpaceToken) continue;
+            yield return token;
         }
-        return tokens;
+        while (token.Kind != SyntaxKind.EofToken);
     }
 }
