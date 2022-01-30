@@ -12,5 +12,7 @@ public enum SyntaxKind
     OpenParenthesisToken,
     CloseParenthesisToken,
     DotToken,
+    FactorialToken,
+    ExponentToken,
     BadToken
 }

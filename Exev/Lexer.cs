@@ -43,6 +43,10 @@ public class Lexer : ILexer
             return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
         if (Current == '-')
             return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
+        if (Current == '!')
+            return new SyntaxToken(SyntaxKind.FactorialToken, _position++, "!", null);
+        if (Current == '^')
+            return new SyntaxToken(SyntaxKind.ExponentToken, _position++, "!", null);
         if (Current == '.')
             return new SyntaxToken(SyntaxKind.DotToken, _position++, ".", null);
         return new SyntaxToken(SyntaxKind.BadToken, _position++,
