@@ -41,6 +41,7 @@ public class Parser : IParser
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");
             tree.Insert(currentNode);
+            _tokens.MoveNext();
         }
         return tree;
     }
@@ -49,7 +50,7 @@ public class Parser : IParser
     {
         if (_tokens.Current.Kind == kind)
         {
-            token = _tokens.NextToken();
+            token = _tokens.Current;
             return true;
         }
         token = null;

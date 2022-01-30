@@ -26,11 +26,9 @@ public class TokensCollection : ITokensCollection
         return _tokens[index];
     }
 
-    public SyntaxToken NextToken()
+    public void MoveNext()
     {
-        var current = Current;
         _position++;
-        return current;
     }
 
     public IEnumerator<SyntaxToken> GetEnumerator() => _tokens.GetEnumerator();

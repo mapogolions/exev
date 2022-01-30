@@ -8,5 +8,5 @@ public interface ITokensCollection : IEnumerable<SyntaxToken>
     SyntaxToken Previous { get; }
     SyntaxToken Next { get; }
     SyntaxToken Peek(int offset);
-    SyntaxToken NextToken();
+    void MoveNext();
 }
