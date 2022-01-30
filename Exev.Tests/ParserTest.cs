@@ -6,24 +6,14 @@ namespace Exev.Tests;
 
 public class ParserTests
 {
-    [Fact]
-    public void CloseParenthesisShouldNotBeAfterOpen()
+    [Theory]
+    [InlineData("(")]
+    [InlineData(")")]
+    [InlineData("())")]
+    [InlineData("(()")]
+    public void ShouldThrowExceptionIfExpressionIsUnbalanced(string source)
     {
-        var parser = new Parser(new Lexer("()"));
-        Assert.Throws<TokenValidationException>(parser.Parse);
-    }
-
-    [Fact]
-    public void OpenParenthesisShouldNotBeTheLastToken()
-    {
-        var parser = new Parser(new Lexer("12 + ("));
-        Assert.Throws<TokenValidationException>(parser.Parse);
-    }
-
-    [Fact]
-    public void CloseParenthesisShouldNotBeTheFirstToken()
-    {
-        var parser = new Parser(new Lexer(") 12"));
+        var parser = new Parser(new Lexer(source));
         Assert.Throws<TokenValidationException>(parser.Parse);
     }
 
@@ -50,7 +40,7 @@ public class ParserTests
     [Theory]
     [InlineData("-")]
     [InlineData("+")]
-    [InlineData("(")]
+    [InlineData("12 + (")]
     [InlineData("*")]
     [InlineData("/")]
     [InlineData("^")]
@@ -66,8 +56,6 @@ public class ParserTests
     [InlineData("+")]
     [InlineData("*")]
     [InlineData("/")]
-    [InlineData("(")]
-    [InlineData(")")]
     [InlineData("^")]
     public void ShouldThrowExceptionSingleTokenIsNotNumber(string source)
     {
@@ -130,5 +118,12 @@ public class ParserTests
         Assert.Equal(SyntaxKind.OpenParenthesisToken, tree?.Root?.Token?.Kind);
         Assert.Null(tree?.Root.Left);
         Assert.Null(tree?.Root.Right);
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionIfParenthesizedExpressionIsEmpty()
+    {
+        var parser = new Parser(new Lexer("()"));
+        Assert.Throws<TokenValidationException>(parser.Parse);
     }
 }

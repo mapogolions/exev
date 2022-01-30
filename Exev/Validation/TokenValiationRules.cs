@@ -7,21 +7,27 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
 {
     public IEnumerator<ITokenValidationRule> GetEnumerator()
     {
-        // check single element token collection
         yield return new TokenValidationRule(
             null,
-            tokens => tokens.Count() == 2 && tokens.Current.Kind != SyntaxKind.NumberToken
+            tokens => tokens.Count() == 2 && tokens.Current.Kind != SyntaxKind.NumberToken,
+            tokens => $"Invalid expression: {tokens.Current.Text}"
         );
-        // check start
+        yield return new TokenValidationRule(
+            null,
+            tokens => !IsBalanced(tokens, (SyntaxKind.OpenParenthesisToken, SyntaxKind.CloseParenthesisToken)),
+            tokens => $"Unbalanced expression. " +
+                $"( - {tokens.Where(x => x.Kind == SyntaxKind.OpenParenthesisToken).Count()} " +
+                $") - {tokens.Where(x => x.Kind == SyntaxKind.CloseParenthesisToken).Count()}"
+        );
         yield return new TokenValidationRule(
             null,
             tokens => tokens.Count() > 2 &&
                 (tokens.Current.Kind != SyntaxKind.OpenParenthesisToken
                     && tokens.Current.Kind != SyntaxKind.NumberToken
                     && tokens.Current.Kind != SyntaxKind.PlusToken
-                    && tokens.Current.Kind != SyntaxKind.MinusToken)
+                    && tokens.Current.Kind != SyntaxKind.MinusToken),
+            tokens => $"Invalid usage: {tokens.Current.Text}"
         );
-        // check end
         yield return new TokenValidationRule(
             SyntaxKind.EofToken,
             tokens => tokens.Count() > 2 && (tokens.Previous.Kind != SyntaxKind.NumberToken
@@ -52,6 +58,19 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
             SyntaxKind.CloseParenthesisToken,
             tokens => tokens.Previous.Kind == SyntaxKind.OpenParenthesisToken
         );
+        yield return new TokenValidationRule(
+            SyntaxKind.AsteriskToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.NumberToken
+                && tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
+                && tokens.Previous.Kind != SyntaxKind.FactorialToken
+        );
+        yield return new TokenValidationRule(
+            SyntaxKind.SlashToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.NumberToken
+                && tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
+                && tokens.Previous.Kind != SyntaxKind.FactorialToken
+        );
+
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -63,5 +82,23 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         {
             rule.Validate(kind, tokens);
         }
+    }
+
+    private static bool IsBalanced(IEnumerable<SyntaxToken> tokens, (SyntaxKind, SyntaxKind) kinds)
+    {
+        var i = 0;
+        foreach (var token in tokens)
+        {
+            if (kinds.Item1 == token.Kind)
+            {
+                i++;
+                continue;
+            }
+            if (kinds.Item2 == token.Kind && (--i) < 0)
+            {
+                return false;
+            }
+        }
+        return i == 0;
     }
 }
