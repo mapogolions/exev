@@ -19,16 +19,6 @@ public class LexerTests
         Assert.Equal(expected, token.Text);
         Assert.Null(token.Value);
     }
-    [Fact]
-    public void ShouldReturnDotToken()
-    {
-        var token = new Lexer(".").NextToken();
-
-        Assert.Equal(SyntaxKind.DotToken, token.Kind);
-        Assert.Equal(0, token.Position);
-        Assert.Equal(".", token.Text);
-        Assert.Null(token.Value);
-    }
 
     [Fact]
     public void ShouldReturnFactorialToken()

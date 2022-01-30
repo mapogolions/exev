@@ -11,7 +11,6 @@ public enum SyntaxKind
     SlashToken,
     OpenParenthesisToken,
     CloseParenthesisToken,
-    DotToken,
     FactorialToken,
     ExponentToken,
     BadToken,
