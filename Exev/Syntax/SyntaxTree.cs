@@ -13,7 +13,7 @@ public class SyntaxTree
         CurrentNode = ClimbUp(node);
         if (node.Token.Kind == SyntaxKind.CloseParenthesisToken)
         {
-            CurrentNode = RemoveOpenBracket();
+            CurrentNode = RemoveOpenparenthesis();
             return this;
         }
         node.Left = CurrentNode.Right;
@@ -24,7 +24,7 @@ public class SyntaxTree
         return this;
     }
 
-    private SyntaxNode RemoveOpenBracket()
+    private SyntaxNode RemoveOpenparenthesis()
     {
         var node = CurrentNode.Parent;
         if (node == null) return CurrentNode;

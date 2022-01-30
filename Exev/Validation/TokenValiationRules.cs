@@ -10,12 +10,12 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
             tokens => tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken,
-            "Open bracket cannot be after close bracket"
+            "Open parenthesis cannot be after close parenthesis"
         );
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
             tokens => tokens.Previous.Kind != SyntaxKind.NumberToken,
-            "Open bracket cannot be after number"
+            "Open parenthesis cannot be after number"
         );
         yield return new TokenValidationRule(
             SyntaxKind.OpenParenthesisToken,
@@ -25,7 +25,7 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         yield return new TokenValidationRule(
             SyntaxKind.CloseParenthesisToken,
             tokens => !object.ReferenceEquals(tokens.Previous, tokens.Current),
-            "Close bracket can't be the first token"
+            "Close parenthesis can't be the first token"
         );
         yield return new TokenValidationRule(
             SyntaxKind.CloseParenthesisToken,
