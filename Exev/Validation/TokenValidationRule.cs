@@ -5,21 +5,22 @@ namespace Exev.Validation;
 public class TokenValidationRule : ITokenValidationRule
 {
     public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation,
-        string failureMessage = "")
+        Func<ITokensCollection, string> failure)
     {
         Kind = kind;
         Validation = validation;
-        FailureMessage = failureMessage;
+        Failure = failure;
     }
 
     public TokenValidationRule(SyntaxKind kind, Func<ITokensCollection, bool> validation)
-        : this(kind, validation, $"Unexpected {kind}") { }
+        : this (kind, validation,
+        tokens => $"Unexpected {tokens.Current.Kind} follows {tokens.Previous.Kind}: {tokens.Previous.Text}{tokens.Current.Text}") { }
 
     public SyntaxKind Kind { get; }
 
     public Func<ITokensCollection, bool> Validation { get; }
 
-    public string FailureMessage { get; }
+    public Func<ITokensCollection, string> Failure { get; }
 
 
     public void Validate(ITokensCollection tokens)
@@ -28,7 +29,7 @@ public class TokenValidationRule : ITokenValidationRule
         {
             if (!Validation.Invoke(tokens))
             {
-                throw new TokenValidationException(FailureMessage);
+                throw new TokenValidationException(Failure(tokens));
             }
         }
     }
