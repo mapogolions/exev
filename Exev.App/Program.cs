@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Exev.App;
+﻿namespace Exev.App;
 
 internal static class Program
 {
