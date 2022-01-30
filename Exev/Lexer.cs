@@ -17,36 +17,11 @@ public class Lexer : ILexer
         if (Current == '\0')
             return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
         if (char.IsDigit(Current))
-        {
-            var start = _position;
-            while (char.IsDigit(Current)) _position++;
-            if (Current == '.')
-            {
-                var index = ++_position;
-                while (char.IsDigit(Current)) _position++;
-                var txt = _source.Substring(start, _position - start);
-                return index == _position
-                    ? new SyntaxToken(SyntaxKind.BadToken, start, txt, null)
-                    : new SyntaxToken(SyntaxKind.NumberToken, start, txt, double.Parse(txt));
-            }
-            var text = _source.Substring(start, _position - start);
-            var value = int.Parse(text);
-            return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
-        }
+            return ParseNumberToken();
         if (char.IsWhiteSpace(Current))
-        {
-            var start = _position;
-            while (char.IsWhiteSpace(Current)) _position++;
-            var text = _source.Substring(start, _position - start);
-            return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
-        }
+            return ParseSpaceToken();
         if (char.IsLetter(Current))
-        {
-            var start = _position;
-            while (char.IsLetterOrDigit(Current)) _position++;
-            var text = _source.Substring(start, _position - start);
-            return new SyntaxToken(SyntaxKind.FunctionNameToken, start, text, null);
-        }
+            return ParseLiteralToken();
         if (Current == '(')
             return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
         if (Current == ')')
@@ -65,6 +40,40 @@ public class Lexer : ILexer
             return new SyntaxToken(SyntaxKind.ExponentToken, _position++, "^", null);
         return new SyntaxToken(SyntaxKind.BadToken, _position++,
             _source.Substring(_position - 1, 1), null);
+    }
+
+    private SyntaxToken ParseSpaceToken()
+    {
+        var start = _position;
+        while (char.IsWhiteSpace(Current)) _position++;
+        var text = _source.Substring(start, _position - start);
+        return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
+    }
+
+    private SyntaxToken ParseNumberToken()
+    {
+        var start = _position;
+        while (char.IsDigit(Current)) _position++;
+        if (Current == '.')
+        {
+            var index = ++_position;
+            while (char.IsDigit(Current)) _position++;
+            var txt = _source.Substring(start, _position - start);
+            return index == _position
+                ? new SyntaxToken(SyntaxKind.BadToken, start, txt, null)
+                : new SyntaxToken(SyntaxKind.NumberToken, start, txt, double.Parse(txt));
+        }
+        var text = _source.Substring(start, _position - start);
+        var value = int.Parse(text);
+        return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
+    }
+
+    private SyntaxToken ParseLiteralToken()
+    {
+        var start = _position;
+        while (char.IsLetterOrDigit(Current)) _position++;
+        var text = _source.Substring(start, _position - start);
+        return new SyntaxToken(SyntaxKind.FunctionNameToken, start, text, null);
     }
 
     private char Current
