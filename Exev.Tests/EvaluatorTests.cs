@@ -1,12 +1,12 @@
 using Xunit;
+using  Exev.Tests.DataSources;
 
 namespace Exev;
 
 public class EvaluatorTests
 {
     [Theory]
-    [InlineData("1 + 1", 2.0)]
-    [InlineData("2 - 1", 1.0)]
+    [ClassData(typeof(EvaluatorDataSource))]
     public void ShouldEvaluateValidExpressions(string source, double expected)
     {
         var tree = new Parser(new Lexer(source)).Parse();

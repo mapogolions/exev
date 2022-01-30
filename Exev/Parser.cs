@@ -44,7 +44,7 @@ public class Parser : IParser
             else if (TryMatch(SyntaxKind.FactorialToken, out token))
                 currentNode = new SyntaxNode(token!, 6, SyntaxKind.UnaryOperator);
             else if (TryMatch(SyntaxKind.ExponentToken, out token))
-                currentNode = new SyntaxNode(token!, 5, SyntaxKind.UnaryOperator, Assoc.Right);
+                currentNode = new SyntaxNode(token!, 5, SyntaxKind.BinaryOperator, Assoc.Right);
             else if (TryMatch(SyntaxKind.LiteralToken, out token))
                 currentNode = new SyntaxNode(token!, 10, SyntaxKind.CallOperator);
             else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))

@@ -18,21 +18,22 @@ public class Evaluator : IEvaluator
         if (node.Kind == SyntaxKind.NumberExpression) return Convert.ToDouble(node.Token.Value!);
         if (node.Kind == SyntaxKind.UnaryOperator)
         {
-            return node.Token.Text switch
+            return node.Token.Kind switch
             {
-                "+" => b,
-                "-" => -b,
+                SyntaxKind.PlusToken => b,
+                SyntaxKind.MinusToken => -b,
                 _ => throw new InvalidOperationException()
             };
         }
         if (node.Kind == SyntaxKind.BinaryOperator)
         {
-            return node.Token.Text switch
+            return node.Token.Kind switch
             {
-                "+" => a + b,
-                "-" => a - b,
-                "*" => a * b,
-                "/" => a / b,
+                SyntaxKind.PlusToken => a + b,
+                SyntaxKind.MinusToken => a - b,
+                Syntax.SyntaxKind.AsteriskToken => a * b,
+                SyntaxKind.SlashToken => a / b,
+                SyntaxKind.ExponentToken => Math.Pow(a, b),
                 _ => throw new InvalidOperationException()
             };
         }
