@@ -5,6 +5,20 @@ namespace Exev.Tests;
 
 public class LexerTests
 {
+    [Theory]
+    [InlineData("f", "f")]
+    [InlineData("foo", "foo")]
+    [InlineData("foo12", "foo12")]
+    [InlineData("foo_12", "foo")]
+    public void ShouldReturnFunctionNameToken(string source, string expected)
+    {
+        var token = new Lexer(source).NextToken();
+
+        Assert.Equal(SyntaxKind.FunctionNameToken, token.Kind);
+        Assert.Equal(0, token.Position);
+        Assert.Equal(expected, token.Text);
+        Assert.Null(token.Value);
+    }
     [Fact]
     public void ShouldReturnDotToken()
     {

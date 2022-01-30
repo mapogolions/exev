@@ -44,6 +44,8 @@ public class Parser : IParser
                 currentNode = new SyntaxNode(token!, 6);
             else if (TryMatch(SyntaxKind.ExponentToken, out token))
                 currentNode = new SyntaxNode(token!, 5, SyntaxNodeInfo.RightAssoc);
+            else if (TryMatch(SyntaxKind.FunctionNameToken, out token))
+                currentNode = new SyntaxNode(token!, 10);
             else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))
             {
                 var kind = _tokens.Previous.Kind;

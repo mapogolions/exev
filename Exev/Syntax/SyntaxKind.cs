@@ -14,5 +14,6 @@ public enum SyntaxKind
     DotToken,
     FactorialToken,
     ExponentToken,
-    BadToken
+    BadToken,
+    FunctionNameToken
 }

@@ -31,6 +31,13 @@ public class Lexer : ILexer
             var text = _source.Substring(start, _position - start);
             return new SyntaxToken(SyntaxKind.SpaceToken, start, text, null);
         }
+        if (char.IsLetter(Current))
+        {
+            var start = _position;
+            while (char.IsLetterOrDigit(Current)) _position++;
+            var text = _source.Substring(start, _position - start);
+            return new SyntaxToken(SyntaxKind.FunctionNameToken, start, text, null);
+        }
         if (Current == '(')
             return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
         if (Current == ')')
