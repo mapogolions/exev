@@ -7,46 +7,51 @@ public class SyntaxTreeTest
 {
     [Fact]
     public void ShouldNotRemoveRoot()
-    { // + - 1
+    {
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
+                token: new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.PrecedenceOperator,
+                assoc: Assoc.Right
             ));
         Assert.Equal("(", tree.Traverse(Traversal.PreOrder));
     }
 
     [Fact]
     public void ShouldRemoveOpenParenthesis()
-    { // + - 1
+    {
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.SkipClimbUp
+                kind: SyntaxKind.PrecedenceOperator,
+                assoc: Assoc.None
             ))
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
+                token: new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.PrecedenceOperator,
+                assoc: Assoc.Right
             ));
         Assert.Equal("(", tree.Traverse(Traversal.PreOrder));
     }
 
     [Fact]
     public void ShouldSkipClimbUpRightAssocSyntaxNodeIfPrecedenceIsEqualToCurrentNodePrecedence()
-    { // + - 1
+    {
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
-                token: new SyntaxToken(SyntaxKind.NumberToken, -1, "+", null),
+                token: new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.UnaryOperator,
+                assoc: Assoc.Right
             ))
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
+                token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.UnaryOperator,
+                assoc: Assoc.Right
             ));
         Assert.Equal("( + -", tree.Traverse(Traversal.PreOrder));
     }
@@ -57,12 +62,14 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
+                token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 11,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.UnaryOperator,
+                assoc: Assoc.Right
             ));
         Assert.Equal("( 1 -", tree.Traverse(Traversal.PreOrder));
     }
@@ -73,12 +80,14 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
-                new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
+                token: new SyntaxToken(SyntaxKind.MinusToken, -1, "-", null),
                 precedence: 2,
-                metaInfo: SyntaxNodeInfo.RightAssoc
+                kind: SyntaxKind.UnaryOperator,
+                assoc: Assoc.Right
             ));
         Assert.Equal("( - 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -89,12 +98,14 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
+                kind: SyntaxKind.NumberExpression,
                 precedence: 10
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "(", null),
                 precedence: 1,
-                SyntaxNodeInfo.SkipClimbUp
+                kind: SyntaxKind.PrecedenceOperator,
+                Assoc.None
             ));
         Assert.Equal("( 1 (", tree.Traverse(Traversal.PreOrder));
     }
@@ -106,11 +117,12 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 1,
-                metaInfo: SyntaxNodeInfo.LeftAssoc
+                kind: SyntaxKind.BinaryOperator
             ))
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("( + 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -121,12 +133,13 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "2", 2),
                 precedence: 10,
-                metaInfo: SyntaxNodeInfo.LeftAssoc
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("( 2 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -137,11 +150,13 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
-                precedence: 2
+                precedence: 2,
+                kind: SyntaxKind.BinaryOperator
             ));
         Assert.Equal("( + 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -152,7 +167,8 @@ public class SyntaxTreeTest
         var tree = new SyntaxTree(Root)
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "12", 12),
-                precedence: 10
+                precedence: 10,
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("( 12", tree.Traverse(Traversal.InOrder));
     }
@@ -167,6 +183,7 @@ public class SyntaxTreeTest
     private static SyntaxNode Root => new SyntaxNode(
         token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
         precedence: 1,
-        metaInfo: SyntaxNodeInfo.SkipClimbUp
+        kind: SyntaxKind.PrecedenceOperator,
+        assoc: Assoc.None
     );
 }

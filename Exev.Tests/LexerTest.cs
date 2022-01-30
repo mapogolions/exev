@@ -63,7 +63,7 @@ public class LexerTests
     {
         var token = new Lexer("!").NextToken();
 
-        Assert.Equal(SyntaxKind.LiteralToken, token.Kind);
+        Assert.Equal(SyntaxKind.FactorialToken, token.Kind);
         Assert.Equal(0, token.Position);
         Assert.Equal("!", token.Text);
         Assert.Null(token.Value);

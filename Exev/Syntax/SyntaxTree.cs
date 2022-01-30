@@ -38,9 +38,9 @@ public class SyntaxTree
 
     private SyntaxNode ClimbUp(SyntaxNode node)
     {
-        if (node.MetaInfo == SyntaxNodeInfo.SkipClimbUp) return CurrentNode;
+        if (node.Assoc == Assoc.None) return CurrentNode;
         var currentNode = CurrentNode!;
-        if (node.MetaInfo is SyntaxNodeInfo.LeftAssoc)
+        if (node.Assoc is Assoc.Left)
         {
             while (currentNode != Root && node.Precedence <= currentNode!.Precedence)
                 currentNode = currentNode.Parent;

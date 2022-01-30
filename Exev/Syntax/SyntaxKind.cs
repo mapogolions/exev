@@ -11,7 +11,15 @@ public enum SyntaxKind
     SlashToken,
     OpenParenthesisToken,
     CloseParenthesisToken,
+    FactorialToken,
     LiteralToken,
     ExponentToken,
     BadToken,
+
+
+    NumberExpression,
+    UnaryOperator,
+    BinaryOperator,
+    CallOperator,
+    PrecedenceOperator
 }
