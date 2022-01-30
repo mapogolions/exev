@@ -6,7 +6,7 @@ namespace Exev.Tests;
 public class LexerTests
 {
     [Fact]
-    public void ShouldBeAbleParseNext()
+    public void ShouldBeAbleParseNextIfInvalidFloatingPointNumber()
     {
         var lexer = new Lexer("12. 12");
         var badToken = lexer.NextToken();
