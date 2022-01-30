@@ -15,6 +15,7 @@ public class EvaluatorDataSource : IEnumerable<object[]>
         yield return new object[] { "20 * 2 / 5", 8 };
         yield return new object[] { "(-(-20.8))", 20.8 };
         yield return new object[] { "-((-(-20)) * (1 + 1))", -40 };
+        yield return new object[] { "(5-(6/2))+(3*4)", 14 };
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -7,7 +7,7 @@ public class Evaluator : IEvaluator
     public double Evaluate(SyntaxTree tree)
     {
         return EvaluateExpression(tree.Root.Right);
-        throw new NotImplementedException();
+
     }
 
     public double EvaluateExpression(SyntaxNode? node)
