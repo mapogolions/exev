@@ -36,6 +36,10 @@ public class Parser : IParser
                 currentNode = new SyntaxNode(token!, 1, SyntaxNodeInfo.RightAssoc);
             else if (TryMatch(SyntaxKind.NumberToken, out token))
                 currentNode = new SyntaxNode(token!, 10);
+            else if (TryMatch(SyntaxKind.AsteriskToken, out token))
+                currentNode = new SyntaxNode(token!, 4);
+            else if (TryMatch(SyntaxKind.SlashToken, out token))
+                currentNode = new SyntaxNode(token!, 4);
             else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))
             {
                 var kind = _tokens.Previous.Kind;
