@@ -1,8 +1,8 @@
 namespace Exev.Syntax;
 
-public enum ClimbUpStrategy
+public enum ClimbUpCondition
 {
 	Lte,
 	Lt,
-	Skip,
+	Never,
 }

@@ -26,9 +26,9 @@ public class Parser : IParser
         {
             _validationRules.Validate(_tokens.Current.Kind, _tokens);
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
-                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpStrategy.Skip);
+                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpCondition.Never);
             else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
-                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpStrategy.Lt);
+                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpCondition.Lt);
             else if (TryMatch(SyntaxKind.NumberToken, out token))
                 currentNode = new SyntaxNode(token!, 10, SyntaxKind.NumberExpression);
             else if (TryMatch(SyntaxKind.AsteriskToken, out token))
@@ -38,7 +38,7 @@ public class Parser : IParser
             else if (TryMatch(SyntaxKind.FactorialToken, out token))
                 currentNode = new SyntaxNode(token!, 6, SyntaxKind.UnaryOperator);
             else if (TryMatch(SyntaxKind.ExponentToken, out token))
-                currentNode = new SyntaxNode(token!, 5, SyntaxKind.BinaryOperator, ClimbUpStrategy.Lt);
+                currentNode = new SyntaxNode(token!, 5, SyntaxKind.BinaryOperator, ClimbUpCondition.Lt);
             else if (TryMatch(SyntaxKind.LiteralToken, out token))
                 currentNode = new SyntaxNode(token!, 10, SyntaxKind.CallOperator);
             else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))
@@ -47,7 +47,7 @@ public class Parser : IParser
                 if (kind == SyntaxKind.NumberToken || kind == SyntaxKind.CloseParenthesisToken)
                     currentNode = new SyntaxNode(token!, 2, SyntaxKind.BinaryOperator);
                 else
-                    currentNode = new SyntaxNode(token!, 3, SyntaxKind.UnaryOperator, ClimbUpStrategy.Skip);
+                    currentNode = new SyntaxNode(token!, 3, SyntaxKind.UnaryOperator, ClimbUpCondition.Never);
     		}
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");

@@ -13,13 +13,13 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                climbUpStrategy: ClimbUpStrategy.Skip
+                climbUpStrategy: ClimbUpCondition.Never
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                climbUpStrategy: ClimbUpStrategy.Lt
+                climbUpStrategy: ClimbUpCondition.Lt
             ));
         Assert.Equal("", tree.Traverse(Traversal.PreOrder));
     }
@@ -32,13 +32,13 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 1,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lt
+                climbUpStrategy: ClimbUpCondition.Lt
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 1,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lt
+                climbUpStrategy: ClimbUpCondition.Lt
             ));
         Assert.Equal("+ -", tree.Traverse(Traversal.PreOrder));
     }
@@ -56,7 +56,7 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 11,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lt
+                climbUpStrategy: ClimbUpCondition.Lt
             ));
         Assert.Equal("1 -", tree.Traverse(Traversal.PreOrder));
     }
@@ -74,7 +74,7 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.MinusToken, -1, "-", null),
                 precedence: 2,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lt
+                climbUpStrategy: ClimbUpCondition.Lt
             ));
         Assert.Equal("- 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -92,7 +92,7 @@ public class SyntaxTreeTest
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "(", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                ClimbUpStrategy.Skip
+                ClimbUpCondition.Never
             ));
         Assert.Equal("1 (", tree.Traverse(Traversal.PreOrder));
     }
