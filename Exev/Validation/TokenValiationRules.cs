@@ -75,6 +75,12 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
                 && tokens.Previous.Kind != SyntaxKind.FactorialToken
         );
 
+        yield return new TokenValidationRule(
+            SyntaxKind.ExponentToken,
+            tokens => tokens.Previous.Kind != SyntaxKind.NumberToken
+                && tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
+                && tokens.Previous.Kind != SyntaxKind.FactorialToken
+        );
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

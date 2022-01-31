@@ -14,7 +14,7 @@ public class TokenValidationRule : ITokenValidationRule
 
     public TokenValidationRule(SyntaxKind? kind, Func<ITokensCollection, bool> violation)
         : this (kind, violation,
-        tokens => $"Unexpected {tokens.Current.Kind} follows {tokens.Previous.Kind}: {tokens.Previous.Text}{tokens.Current.Text}") { }
+        tokens => $"Unexpected {tokens.Current.Kind} follows {tokens.Previous.Kind}: {tokens.Previous.Text} {tokens.Current.Text}") { }
 
     public SyntaxKind? Kind { get; }
 
