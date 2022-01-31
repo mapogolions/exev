@@ -20,7 +20,7 @@ public class Evaluator : IEvaluator
                 {
                     SyntaxKind.PlusToken => b,
                     SyntaxKind.MinusToken => -b,
-                    _ => throw new InvalidOperationException()
+                    _ => throw new InvalidOperationException($"Unsupported Operation: {node.Token.Text}")
                 };
             }
             if (node.Kind == SyntaxKind.BinaryOperator)
@@ -32,10 +32,10 @@ public class Evaluator : IEvaluator
                     Syntax.SyntaxKind.AsteriskToken => a * b,
                     SyntaxKind.SlashToken => a / b,
                     SyntaxKind.ExponentToken => Math.Pow(a, b),
-                    _ => throw new InvalidOperationException()
+                    _ => throw new InvalidOperationException($"Unsupported Operation: {node.Token.Text}")
                 };
             }
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Unsupported Operation: {node.Token.Text}");
         }
     }
 }
