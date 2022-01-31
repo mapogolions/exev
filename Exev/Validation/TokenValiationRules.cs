@@ -27,8 +27,8 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
                 (a, b) => a == b,
                 (SyntaxKind.OpenParenthesisToken, SyntaxKind.CloseParenthesisToken)
             ),
-            failure: tokens => $"Unbalanced expression. " +
-                $"( - {tokens.Where(x => x.Kind == SyntaxKind.OpenParenthesisToken).Count()} " +
+            failure: tokens => $"Unbalanced expression\n" +
+                $"( - {tokens.Where(x => x.Kind == SyntaxKind.OpenParenthesisToken).Count()}\n" +
                 $") - {tokens.Where(x => x.Kind == SyntaxKind.CloseParenthesisToken).Count()}"
         );
         yield return new TokenValidationRule(
