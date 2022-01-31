@@ -22,7 +22,7 @@ public class Parser : IParser
         if (!_tokens.Any()) return tree;
         _validationRules.Validate(null, _tokens);
         SyntaxNode? currentNode;
-        while (true)
+        do
         {
             _validationRules.Validate(_tokens.Current.Kind, _tokens);
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
@@ -48,12 +48,12 @@ public class Parser : IParser
                     currentNode = new SyntaxNode(token!, 2, SyntaxKind.BinaryOperator);
                 else
                     currentNode = new SyntaxNode(token!, 3, SyntaxKind.UnaryOperator, ClimbUpCondition.Never);
-    		}
+            }
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");
             tree.Insert(currentNode);
-            if (!_tokens.MoveNext()) break;
-        }
+        } 
+        while (_tokens.MoveNext());
         return tree;
     }
 
