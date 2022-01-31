@@ -3,8 +3,6 @@ namespace Exev.Syntax;
 public class SyntaxTree
 {
     private readonly SyntaxNode _root;
-    public SyntaxNode? Root => _root.Right;
-
     private SyntaxNode _currentNode { get; set; }
 
     public SyntaxTree()
@@ -16,6 +14,8 @@ public class SyntaxTree
                 assoc: Assoc.None
             );
     }
+
+    public SyntaxNode? Root => _root.Right;
 
     public SyntaxTree Insert(SyntaxNode node)
     {
