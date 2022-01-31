@@ -5,6 +5,15 @@ namespace Exev.Validation;
 
 public class TokenValiationRules : IEnumerable<ITokenValidationRule>
 {
+    public void Validate(SyntaxKind? kind, ITokensCollection tokens)
+    {
+        var failures = new List<string>();
+        foreach (var rule in this)
+        {
+            rule.Validate(kind, tokens);
+        }
+    }
+
     public IEnumerator<ITokenValidationRule> GetEnumerator()
     {
         yield return new TokenValidationRule(
@@ -84,13 +93,4 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    public void Validate(SyntaxKind? kind, ITokensCollection tokens)
-    {
-        var failures = new List<string>();
-        foreach (var rule in this)
-        {
-            rule.Validate(kind, tokens);
-        }
-    }
 }
