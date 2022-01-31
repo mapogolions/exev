@@ -1,4 +1,5 @@
 using Exev.Syntax;
+using System.Collections.Generic;
 
 namespace Exev;
 
@@ -8,5 +9,5 @@ public interface ITokensCollection : IEnumerable<SyntaxToken>
     SyntaxToken Previous { get; }
     SyntaxToken Next { get; }
     SyntaxToken Peek(int offset);
-    void MoveNext();
+    bool MoveNext();
 }

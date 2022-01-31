@@ -26,9 +26,11 @@ public class TokensCollection : ITokensCollection
         return _tokens[index];
     }
 
-    public void MoveNext()
+    public bool MoveNext()
     {
+        if (_position >= _tokens.Count) return false;
         _position++;
+        return true;
     }
 
     public IEnumerator<SyntaxToken> GetEnumerator() => _tokens.GetEnumerator();
