@@ -9,7 +9,7 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
     {
         yield return new TokenValidationRule(
             null,
-            tokens => tokens.Count() == 2 && tokens.Current.Kind != SyntaxKind.NumberToken,
+            tokens => tokens.Count() == 1 && tokens.Current.Kind != SyntaxKind.NumberToken,
             tokens => $"Invalid expression: {tokens.Current.Text}"
         );
         yield return new TokenValidationRule(
@@ -21,7 +21,7 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         );
         yield return new TokenValidationRule(
             null,
-            tokens => tokens.Count() > 2 &&
+            tokens => tokens.Count() > 1 &&
                 (tokens.Current.Kind != SyntaxKind.OpenParenthesisToken
                     && tokens.Current.Kind != SyntaxKind.NumberToken
                     && tokens.Current.Kind != SyntaxKind.PlusToken
@@ -30,7 +30,7 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         );
         yield return new TokenValidationRule(
             SyntaxKind.EofToken,
-            tokens => tokens.Count() > 2 && (tokens.Previous.Kind != SyntaxKind.NumberToken
+            tokens => tokens.Count() > 1 && (tokens.Previous.Kind != SyntaxKind.NumberToken
                 && tokens.Previous.Kind != SyntaxKind.CloseParenthesisToken
                 && tokens.Previous.Kind != SyntaxKind.FactorialToken)
         );

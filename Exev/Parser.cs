@@ -1,4 +1,3 @@
-using System.Linq;
 using Exev.Syntax;
 using Exev.Validation;
 
@@ -27,12 +26,12 @@ public class Parser : IParser
                 assoc: Assoc.None
             )
         );
-        SyntaxNode? currentNode = null;
+        if (!_tokens.Any()) return tree;
         _validationRules.Validate(null, _tokens);
+        SyntaxNode? currentNode;
         while (true)
         {
             _validationRules.Validate(_tokens.Current.Kind, _tokens);
-            if (_tokens.Current.Kind == SyntaxKind.EofToken) break;
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
                 currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, Assoc.None);
             else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
@@ -60,7 +59,7 @@ public class Parser : IParser
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");
             tree.Insert(currentNode);
-            _tokens.MoveNext();
+            if (!_tokens.MoveNext()) break;
         }
         return tree;
     }
@@ -78,13 +77,13 @@ public class Parser : IParser
 
     private IEnumerable<SyntaxToken> GetSyntaxTokens()
     {
-        SyntaxToken? token = null;
-        do
+        SyntaxToken? token;
+        while (true)
         {
             token = _lexer.NextToken();
+            if (token.Kind == SyntaxKind.EofToken) yield break;
             if (token.Kind == SyntaxKind.SpaceToken) continue;
             yield return token;
         }
-        while (token.Kind != SyntaxKind.EofToken);
     }
 }

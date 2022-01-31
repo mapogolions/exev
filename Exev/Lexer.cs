@@ -16,12 +16,9 @@ public class Lexer : ILexer
     {
         if (Current == '\0')
             return new SyntaxToken(SyntaxKind.EofToken, _position, "\0", null);
-        if (char.IsDigit(Current))
-            return ParseNumberToken();
-        if (char.IsWhiteSpace(Current))
-            return ParseSpaceToken();
-        if (char.IsLetter(Current))
-            return ParseLiteralToken();
+        if (char.IsDigit(Current)) return ParseNumberToken();
+        if (char.IsWhiteSpace(Current)) return ParseSpaceToken();
+        if (char.IsLetter(Current)) return ParseLiteralToken();
         if (Current == '(')
             return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
         if (Current == ')')
