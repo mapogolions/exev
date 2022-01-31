@@ -7,7 +7,6 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
 {
     public void Validate(SyntaxKind? kind, ITokensCollection tokens)
     {
-        var failures = new List<string>();
         foreach (var rule in this)
         {
             rule.Validate(kind, tokens);
