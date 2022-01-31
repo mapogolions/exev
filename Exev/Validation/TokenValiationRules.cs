@@ -13,9 +13,13 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
             tokens => $"Invalid expression: {tokens.Current.Text}"
         );
         yield return new TokenValidationRule(
-            null,
-            tokens => !IsBalanced(tokens, (SyntaxKind.OpenParenthesisToken, SyntaxKind.CloseParenthesisToken)),
-            tokens => $"Unbalanced expression. " +
+            kind: null,
+            violation: tokens => !tokens.IsBalanced(
+                token => token.Kind,
+                (a, b) => a == b,
+                (SyntaxKind.OpenParenthesisToken, SyntaxKind.CloseParenthesisToken)
+            ),
+            failure: tokens => $"Unbalanced expression. " +
                 $"( - {tokens.Where(x => x.Kind == SyntaxKind.OpenParenthesisToken).Count()} " +
                 $") - {tokens.Where(x => x.Kind == SyntaxKind.CloseParenthesisToken).Count()}"
         );
@@ -82,23 +86,5 @@ public class TokenValiationRules : IEnumerable<ITokenValidationRule>
         {
             rule.Validate(kind, tokens);
         }
-    }
-
-    private static bool IsBalanced(IEnumerable<SyntaxToken> tokens, (SyntaxKind, SyntaxKind) kinds)
-    {
-        var i = 0;
-        foreach (var token in tokens)
-        {
-            if (kinds.Item1 == token.Kind)
-            {
-                i++;
-                continue;
-            }
-            if (kinds.Item2 == token.Kind && (--i) < 0)
-            {
-                return false;
-            }
-        }
-        return i == 0;
     }
 }
