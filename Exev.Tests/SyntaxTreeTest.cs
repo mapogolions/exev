@@ -50,8 +50,7 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
@@ -69,8 +68,7 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.MinusToken, -1, "-", null),
@@ -88,8 +86,7 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 kind: SyntaxKind.NumberExpression,
-                precedence: 10,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                precedence: 10
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "(", null),
@@ -107,14 +104,12 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 1,
-                kind: SyntaxKind.BinaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.BinaryOperator
             ))
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("+ 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -126,14 +121,12 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "2", 2),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("2 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -145,14 +138,12 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "1", 1),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ))
             .Insert(new SyntaxNode (
                 new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 2,
-                kind: SyntaxKind.BinaryOperator,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.BinaryOperator
             ));
         Assert.Equal("+ 1", tree.Traverse(Traversal.PreOrder));
     }
@@ -164,8 +155,7 @@ public class SyntaxTreeTest
             .Insert(new SyntaxNode(
                 token: new SyntaxToken(SyntaxKind.NumberToken, -1, "12", 12),
                 precedence: 10,
-                kind: SyntaxKind.NumberExpression,
-                climbUpStrategy: ClimbUpStrategy.Lte
+                kind: SyntaxKind.NumberExpression
             ));
         Assert.Equal("12", tree.Traverse(Traversal.InOrder));
     }
