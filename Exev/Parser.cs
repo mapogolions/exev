@@ -18,14 +18,7 @@ public class Parser : IParser
 
     public SyntaxTree Parse()
     {
-        var tree = new SyntaxTree(
-            new SyntaxNode(
-                token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
-                precedence: 1,
-                kind: SyntaxKind.PrecedenceOperator,
-                assoc: Assoc.None
-            )
-        );
+        var tree = new SyntaxTree();
         if (!_tokens.Any()) return tree;
         _validationRules.Validate(null, _tokens);
         SyntaxNode? currentNode;

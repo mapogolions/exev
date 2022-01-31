@@ -23,7 +23,7 @@ public class ParserTests
         var parser = new Parser(new Lexer("((1))"));
         var tree = parser.Parse();
         var actual = tree.Traverse(Traversal.PreOrder);
-        Assert.Equal("( 1", actual);
+        Assert.Equal("1", actual);
     }
 
     [Theory]
@@ -99,25 +99,19 @@ public class ParserTests
     }
 
     [Fact]
-    public void ShouldSkipWhitespacesAndReturnSyntaxTree()
+    public void ShouldSkipWhitespacesAndReturnSyntaxTreeWithNullAsRoot()
     {
         var parser = new Parser(new Lexer("  \n\t"));
         var tree = parser.Parse();
-
-        Assert.Equal(SyntaxKind.OpenParenthesisToken, tree?.Root?.Token?.Kind);
-        Assert.Null(tree?.Root.Left);
-        Assert.Null(tree?.Root.Right);
+        Assert.Null(tree.Root);
     }
 
     [Fact]
-    public void ShouldReturnSyntaxTreeWithOpenParenthesisAsRoot()
+    public void ShouldReturnSyntaxTreeWithNullAsRoot()
     {
         var parser = new Parser(new Lexer(""));
         var tree = parser.Parse();
-
-        Assert.Equal(SyntaxKind.OpenParenthesisToken, tree?.Root?.Token?.Kind);
-        Assert.Null(tree?.Root.Left);
-        Assert.Null(tree?.Root.Right);
+        Assert.Null(tree.Root);
     }
 
     [Fact]

@@ -2,52 +2,61 @@ namespace Exev.Syntax;
 
 public class SyntaxTree
 {
-    public SyntaxNode Root { get; private set; }
+    private readonly SyntaxNode _root;
+    public SyntaxNode? Root => _root.Right;
 
-    private SyntaxNode CurrentNode { get; set; }
+    private SyntaxNode _currentNode { get; set; }
 
-    public SyntaxTree(SyntaxNode root) => Root = CurrentNode = root;
+    public SyntaxTree()
+    {
+        _root = _currentNode = new SyntaxNode(
+                token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
+                precedence: 1,
+                kind: SyntaxKind.PrecedenceOperator,
+                assoc: Assoc.None
+            );
+    }
 
     public SyntaxTree Insert(SyntaxNode node)
     {
-        CurrentNode = ClimbUp(node);
+        _currentNode = ClimbUp(node);
         if (node.Token.Kind == SyntaxKind.CloseParenthesisToken)
         {
-            CurrentNode = RemoveOpenparenthesis();
+            _currentNode = RemoveOpenparenthesis();
             return this;
         }
-        node.Left = CurrentNode.Right;
-        node.Parent = CurrentNode;
-        if (CurrentNode.Right != null) CurrentNode.Right.Parent = node;
-        CurrentNode.Right = node;
-        CurrentNode = node;
+        node.Left = _currentNode.Right;
+        node.Parent = _currentNode;
+        if (_currentNode.Right != null) _currentNode.Right.Parent = node;
+        _currentNode.Right = node;
+        _currentNode = node;
         return this;
     }
 
     private SyntaxNode RemoveOpenparenthesis()
     {
-        var node = CurrentNode.Parent;
-        if (node == null) return CurrentNode;
-        node.Right = CurrentNode.Right;
-        if (CurrentNode.Right != null)
+        var node = _currentNode.Parent;
+        if (node == null) return _currentNode;
+        node.Right = _currentNode.Right;
+        if (_currentNode.Right != null)
         {
-            CurrentNode.Right.Parent = node;
+            _currentNode.Right.Parent = node;
         }
         return node;
     }
 
     private SyntaxNode ClimbUp(SyntaxNode node)
     {
-        if (node.Assoc == Assoc.None) return CurrentNode;
-        var currentNode = CurrentNode!;
+        if (node.Assoc == Assoc.None) return _currentNode;
+        var currentNode = _currentNode!;
         if (node.Assoc is Assoc.Left)
         {
-            while (currentNode != Root && node.Precedence <= currentNode!.Precedence)
+            while (currentNode != _root && node.Precedence <= currentNode!.Precedence)
                 currentNode = currentNode.Parent;
         }
         else
         {
-            while (currentNode != Root && node.Precedence < currentNode!.Precedence)
+            while (currentNode != _root && node.Precedence < currentNode!.Precedence)
                 currentNode = currentNode.Parent;
         }
         return currentNode;
