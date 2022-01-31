@@ -1,7 +1,7 @@
 using Xunit;
 using  Exev.Tests.DataSources;
 
-namespace Exev;
+namespace Exev.Tests;
 
 public class EvaluatorTests
 {
