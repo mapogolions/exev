@@ -13,13 +13,13 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                climbUpStrategy: ClimbUpCondition.Never
+                condition: ClimbUpCondition.Never
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.CloseParenthesisToken, -1, ")", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                climbUpStrategy: ClimbUpCondition.Lt
+                condition: ClimbUpCondition.Lt
             ));
         Assert.Equal("", tree.Traverse(Traversal.PreOrder));
     }
@@ -32,13 +32,13 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "+", null),
                 precedence: 1,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpCondition.Lt
+                condition: ClimbUpCondition.Lt
             ))
             .Insert(new SyntaxNode (
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 1,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpCondition.Lt
+                condition: ClimbUpCondition.Lt
             ));
         Assert.Equal("+ -", tree.Traverse(Traversal.PreOrder));
     }
@@ -56,7 +56,7 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.PlusToken, -1, "-", null),
                 precedence: 11,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpCondition.Lt
+                condition: ClimbUpCondition.Lt
             ));
         Assert.Equal("1 -", tree.Traverse(Traversal.PreOrder));
     }
@@ -74,7 +74,7 @@ public class SyntaxTreeTest
                 token: new SyntaxToken(SyntaxKind.MinusToken, -1, "-", null),
                 precedence: 2,
                 kind: SyntaxKind.UnaryOperator,
-                climbUpStrategy: ClimbUpCondition.Lt
+                condition: ClimbUpCondition.Lt
             ));
         Assert.Equal("- 1", tree.Traverse(Traversal.PreOrder));
     }
