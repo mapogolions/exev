@@ -2,8 +2,7 @@ namespace Exev.Syntax;
 
 public class SyntaxNode
 {
-    public SyntaxNode(SyntaxToken token, int precedence, SyntaxKind kind,
-        Assoc assoc = Assoc.Left)
+    public SyntaxNode(SyntaxToken token, int precedence, SyntaxKind kind, Assoc assoc)
     {
         Token = token;
         Precedence = precedence;
