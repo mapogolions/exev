@@ -26,28 +26,28 @@ public class Parser : IParser
         {
             _validationRules.Validate(_tokens.Current.Kind, _tokens);
             if (TryMatch(SyntaxKind.OpenParenthesisToken, out var token))
-                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, Assoc.None);
+                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpStrategy.Skip);
             else if (TryMatch(SyntaxKind.CloseParenthesisToken, out token))
-                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, Assoc.Right);
+                currentNode = new SyntaxNode(token!, 1, SyntaxKind.PrecedenceOperator, ClimbUpStrategy.Lt);
             else if (TryMatch(SyntaxKind.NumberToken, out token))
-                currentNode = new SyntaxNode(token!, 10, SyntaxKind.NumberExpression, Assoc.Left);
+                currentNode = new SyntaxNode(token!, 10, SyntaxKind.NumberExpression);
             else if (TryMatch(SyntaxKind.AsteriskToken, out token))
-                currentNode = new SyntaxNode(token!, 4, SyntaxKind.BinaryOperator, Assoc.Left);
+                currentNode = new SyntaxNode(token!, 4, SyntaxKind.BinaryOperator);
             else if (TryMatch(SyntaxKind.SlashToken, out token))
-                currentNode = new SyntaxNode(token!, 4, SyntaxKind.BinaryOperator, Assoc.Left);
+                currentNode = new SyntaxNode(token!, 4, SyntaxKind.BinaryOperator);
             else if (TryMatch(SyntaxKind.FactorialToken, out token))
-                currentNode = new SyntaxNode(token!, 6, SyntaxKind.UnaryOperator, Assoc.Left);
+                currentNode = new SyntaxNode(token!, 6, SyntaxKind.UnaryOperator);
             else if (TryMatch(SyntaxKind.ExponentToken, out token))
-                currentNode = new SyntaxNode(token!, 5, SyntaxKind.BinaryOperator, Assoc.Right);
+                currentNode = new SyntaxNode(token!, 5, SyntaxKind.BinaryOperator, ClimbUpStrategy.Lt);
             else if (TryMatch(SyntaxKind.LiteralToken, out token))
-                currentNode = new SyntaxNode(token!, 10, SyntaxKind.CallOperator, Assoc.Left);
+                currentNode = new SyntaxNode(token!, 10, SyntaxKind.CallOperator);
             else if (TryMatch(SyntaxKind.PlusToken, out token) || TryMatch(SyntaxKind.MinusToken, out token))
             {
                 var kind = _tokens.Previous.Kind;
                 if (kind == SyntaxKind.NumberToken || kind == SyntaxKind.CloseParenthesisToken)
-                    currentNode = new SyntaxNode(token!, 2, SyntaxKind.BinaryOperator, Assoc.Left);
+                    currentNode = new SyntaxNode(token!, 2, SyntaxKind.BinaryOperator);
                 else
-                    currentNode = new SyntaxNode(token!, 3, SyntaxKind.UnaryOperator, Assoc.Right);
+                    currentNode = new SyntaxNode(token!, 3, SyntaxKind.UnaryOperator, ClimbUpStrategy.Skip);
     		}
             else
                 throw new TokenValidationException($"Unexpected token {_tokens.Current.Text} was found");

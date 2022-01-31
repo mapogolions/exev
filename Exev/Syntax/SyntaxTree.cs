@@ -11,7 +11,7 @@ public class SyntaxTree
                 token: new SyntaxToken(SyntaxKind.OpenParenthesisToken, -1, "(", null),
                 precedence: 1,
                 kind: SyntaxKind.PrecedenceOperator,
-                assoc: Assoc.None
+                climbUpStrategy: ClimbUpStrategy.Skip
             );
     }
 
@@ -47,9 +47,9 @@ public class SyntaxTree
 
     private SyntaxNode ClimbUp(SyntaxNode node)
     {
-        if (node.Assoc == Assoc.None) return _currentNode;
+        if (node.ClimbUpStrategy == ClimbUpStrategy.Skip) return _currentNode;
         var currentNode = _currentNode!;
-        if (node.Assoc is Assoc.Left)
+        if (node.ClimbUpStrategy is ClimbUpStrategy.Lte)
         {
             while (currentNode != _root && node.Precedence <= currentNode!.Precedence)
                 currentNode = currentNode.Parent;

@@ -2,18 +2,19 @@ namespace Exev.Syntax;
 
 public class SyntaxNode
 {
-    public SyntaxNode(SyntaxToken token, int precedence, SyntaxKind kind, Assoc assoc)
+    public SyntaxNode(SyntaxToken token, int precedence, SyntaxKind kind,
+        ClimbUpStrategy climbUpStrategy = ClimbUpStrategy.Lte)
     {
         Token = token;
         Precedence = precedence;
         Kind = kind;
-        Assoc = assoc;
+        ClimbUpStrategy = climbUpStrategy;
     }
 
     public SyntaxToken Token { get; set; }
     public int Precedence { get; set; }
     public SyntaxKind Kind { get; }
-    public Assoc Assoc { get; set; }
+    public ClimbUpStrategy ClimbUpStrategy { get; set; }
 
     public SyntaxNode? Parent { get; set; }
     public SyntaxNode? Left { get; set; }
